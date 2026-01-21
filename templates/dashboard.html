@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ACA AOL — Accurate Online Importer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#f97316',   // orange-500
+            primaryDark: '#ea580c'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-slate-50 text-slate-900 min-h-screen">
+
+<!-- =========================
+     1) LANDING PAGE
+========================= -->
+<section id="landingPage" class="hidden min-h-screen">
+  <header class="bg-white/80 backdrop-blur border-b border-slate-200 sticky top-0 z-10">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-primary/10 text-primary font-extrabold">
+          A
+        </div>
+        <div>
+          <div class="text-sm font-bold leading-tight">ACA AOL</div>
+          <div class="text-xs text-slate-500 leading-tight">Accurate Online Importer</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="btnGoLoginTop"
+          class="rounded-xl bg-primary text-white px-4 py-2 text-sm font-semibold hover:bg-primaryDark transition">
+          Masuk
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- hero -->
+    <section class="max-w-7xl mx-auto px-6 pt-10 pb-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-7">
+          <div class="inline-flex items-center gap-2 rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold">
+            SaaS Import Transaksi Accurate Online
+          </div>
+          <h1 class="text-4xl lg:text-5xl font-extrabold tracking-tight mt-4">
+            Import transaksi Accurate Online dari Excel, rapi & cepat.
+          </h1>
+          <p class="text-slate-600 mt-4 text-lg leading-relaxed">
+            ACA AOL membantu tim finance mengimpor transaksi (mulai dari <b>Jurnal Voucher</b>, dan modul lain menyusul)
+            tanpa ribet mapping manual. Cocok untuk volume tinggi, multi database, dan kebutuhan standardisasi template.
+          </p>
+
+          <div class="mt-6 flex flex-col sm:flex-row gap-3">
+            <button id="btnGoLoginHero"
+              class="rounded-xl bg-primary text-white px-5 py-3 text-sm font-semibold hover:bg-primaryDark transition">
+              Masuk dengan Kode Akses
+            </button>
+            <a href="#features"
+              class="rounded-xl bg-white border border-slate-200 px-5 py-3 text-sm font-semibold hover:bg-slate-50 transition text-center">
+              Lihat Fitur
+            </a>
+          </div>
+
+          <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+              <div class="text-xs text-slate-500">Workflow</div>
+              <div class="font-semibold mt-1">Preview → Validasi → Import</div>
+            </div>
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+              <div class="text-xs text-slate-500">Multi DB</div>
+              <div class="font-semibold mt-1">Pilih Data Usaha</div>
+            </div>
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+              <div class="text-xs text-slate-500">Audit-friendly</div>
+              <div class="font-semibold mt-1">Log hasil import</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5">
+          <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="text-xs text-slate-500">Status Akses</div>
+                <div id="landingAccessStatus" class="font-semibold">Checking...</div>
+              </div>
+              <span id="landingTenantPill"
+                class="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-semibold">
+                Tenant: -
+              </span>
+            </div>
+
+            <div class="mt-5 space-y-3">
+              <div class="rounded-2xl bg-slate-50 border border-slate-200 p-4">
+                <div class="text-sm font-semibold">Cara mulai</div>
+                <ol class="mt-2 text-sm text-slate-600 list-decimal ml-5 space-y-1">
+                  <li>Masuk pakai <b>kode akses</b> yang kami berikan</li>
+                  <li>Login OAuth Accurate untuk izin API</li>
+                  <li>Pilih Data Usaha</li>
+                  <li>Upload Excel → Preview → Validasi → Import</li>
+                </ol>
+              </div>
+
+              <button id="btnGoLoginCard"
+                class="w-full rounded-xl bg-primary text-white px-4 py-2 text-sm font-semibold hover:bg-primaryDark transition">
+                Masuk
+              </button>
+
+              <p class="text-xs text-slate-500">
+                Catatan: tiap customer akan dapat <b>subdomain</b> sendiri (mis. <span class="font-mono">acis.aca-aol.id</span>).
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- features -->
+    <section id="features" class="max-w-7xl mx-auto px-6 pb-14">
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-8">
+        <h2 class="text-2xl font-extrabold">Fitur utama</h2>
+        <p class="text-slate-600 mt-1">Dibuat untuk operasional finance harian yang butuh rapi, cepat, dan minim error.</p>
+
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="rounded-2xl border border-slate-200 p-5">
+            <div class="text-primary font-bold">Validasi otomatis</div>
+            <div class="text-sm text-slate-600 mt-1">Cek kolom wajib, format tanggal, balance debit-kredit, dll.</div>
+          </div>
+          <div class="rounded-2xl border border-slate-200 p-5">
+            <div class="text-primary font-bold">Log mudah dibaca</div>
+            <div class="text-sm text-slate-600 mt-1">Tahu jurnal mana sukses/gagal, plus pesan error yang jelas.</div>
+          </div>
+          <div class="rounded-2xl border border-slate-200 p-5">
+            <div class="text-primary font-bold">Multi database</div>
+            <div class="text-sm text-slate-600 mt-1">Dalam 1 akun Accurate, bisa pilih Data Usaha yang aktif.</div>
+          </div>
+        </div>
+
+        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+          <button id="btnGoLoginBottom"
+            class="rounded-xl bg-primary text-white px-5 py-3 text-sm font-semibold hover:bg-primaryDark transition">
+            Masuk sekarang
+          </button>
+          <button id="btnOpenLoginInfo"
+            class="rounded-xl bg-white border border-slate-200 px-5 py-3 text-sm font-semibold hover:bg-slate-50 transition">
+            Cara login
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="pb-10">
+      <div class="max-w-7xl mx-auto px-6 text-xs text-slate-500">
+        © <span id="yearNow"></span> ACA AOL — Accurate Online Importer
+      </div>
+    </footer>
+  </main>
+</section>
+
+<!-- =========================
+     2) GATE LOGIN (FULL PAGE)
+========================= -->
+<section id="gatePage" class="hidden min-h-screen">
+  <div class="min-h-screen flex items-center justify-center px-6">
+    <div class="w-full max-w-md">
+      <div class="text-center mb-6">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 text-primary font-bold">
+          AO
+        </div>
+        <h1 class="text-2xl font-extrabold mt-3">Masuk ke Dashboard</h1>
+        <p class="text-sm text-slate-600 mt-1">
+          Masukkan <b>kode akses</b> untuk tenant ini.
+        </p>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-xs text-slate-500">Tenant / Subdomain</div>
+            <div id="gateTenant" class="font-semibold">-</div>
+          </div>
+          <span id="gateStatusPill"
+            class="text-xs px-3 py-1 rounded-full bg-slate-100 text-slate-600">
+            Ready
+          </span>
+        </div>
+
+        <form id="gateForm" class="mt-5 space-y-3">
+          <div>
+            <label class="block text-sm font-medium">Kode Akses</label>
+            <input id="accessCode" type="password" autocomplete="off" inputmode="text"
+              placeholder="Masukkan kode akses"
+              class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:outline-none" />
+            <p class="text-xs text-slate-500 mt-2">
+              Kode ini diberikan oleh admin saat langganan aktif.
+            </p>
+          </div>
+
+          <button id="btnGateLogin" type="submit"
+            class="w-full rounded-xl bg-primary text-white px-4 py-2 text-sm font-semibold hover:bg-primaryDark transition disabled:opacity-60">
+            Masuk
+          </button>
+
+          <div id="gateError" class="hidden text-sm text-rose-700"></div>
+
+          <div class="pt-3 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
+            <button id="btnBackToLanding" type="button" class="hover:text-slate-700 font-semibold">
+              ← Kembali
+            </button>
+            <span>Butuh bantuan? hubungi admin</span>
+          </div>
+        </form>
+      </div>
+
+      <div class="text-center text-xs text-slate-500 mt-4">
+        © <span id="yearNow2"></span> ACA AOL
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================
+     3) APP SHELL (DASHBOARD)
+========================= -->
+<div id="appShell" class="hidden">
+
+  <header class="bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div>
+        <h1 class="text-xl font-bold text-slate-900">Accurate Online Importer</h1>
+        <p class="text-sm text-slate-500">Dashboard • pilih modul • upload & import transaksi</p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <span id="tenantBadge"
+          class="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-semibold">
+          Tenant: -
+        </span>
+
+        <span id="oauthBadge"
+          class="text-xs px-3 py-1 rounded-full bg-slate-100 text-slate-600">
+          OAuth: checking...
+        </span>
+
+        <a href="/oauth/login"
+           class="inline-flex items-center justify-center rounded-xl bg-primary text-white px-4 py-2 text-sm font-semibold hover:bg-primaryDark transition">
+          Login Accurate
+        </a>
+
+        <button id="btnLogout"
+          class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold hover:bg-slate-50 transition">
+          Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Main ===== -->
+  <main class="max-w-7xl mx-auto px-6 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- Sidebar -->
+      <aside class="lg:col-span-3">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="p-5 border-b border-slate-200">
+            <div class="text-xs text-slate-500">Modules</div>
+            <div class="text-lg font-semibold">Pilih Modul</div>
+            <p class="text-sm text-slate-600 mt-1">
+              Pilih jenis transaksi yang mau diimpor.
+            </p>
+          </div>
+
+          <nav class="p-2">
+            <button class="module-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-50 flex items-center justify-between"
+                    data-module="journal_voucher">
+              <span>
+                <div class="font-semibold">Jurnal Voucher</div>
+                <div class="text-xs text-slate-500">Import jurnal umum</div>
+              </span>
+              <span class="module-pill text-xs px-2 py-1 rounded-full bg-primary/10 text-primary font-semibold">Aktif</span>
+            </button>
+
+            <button class="module-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-50 flex items-center justify-between"
+                    data-module="payment">
+              <span><div class="font-semibold">Payment</div><div class="text-xs text-slate-500">Pembayaran</div></span>
+              <span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-600">Soon</span>
+            </button>
+
+            <button class="module-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-50 flex items-center justify-between"
+                    data-module="deposit">
+              <span><div class="font-semibold">Deposit</div><div class="text-xs text-slate-500">Setoran</div></span>
+              <span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-600">Soon</span>
+            </button>
+
+            <button class="module-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-50 flex items-center justify-between"
+                    data-module="sales_invoice">
+              <span><div class="font-semibold">Sales Invoice</div><div class="text-xs text-slate-500">Faktur penjualan</div></span>
+              <span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-600">Soon</span>
+            </button>
+
+            <button class="module-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-50 flex items-center justify-between"
+                    data-module="sales_receipt">
+              <span><div class="font-semibold">Sales Receipt</div><div class="text-xs text-slate-500">Penerimaan penjualan</div></span>
+              <span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-600">Soon</span>
+            </button>
+
+            <button class="module-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-50 flex items-center justify-between"
+                    data-module="sales_order">
+              <span><div class="font-semibold">Sales Order</div><div class="text-xs text-slate-500">Pesanan penjualan</div></span>
+              <span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-600">Soon</span>
+            </button>
+
+            <button class="module-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-50 flex items-center justify-between"
+                    data-module="purchase_invoice">
+              <span><div class="font-semibold">Purchase Invoice</div><div class="text-xs text-slate-500">Faktur pembelian</div></span>
+              <span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-600">Soon</span>
+            </button>
+
+            <button class="module-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-50 flex items-center justify-between"
+                    data-module="purchase_payment">
+              <span><div class="font-semibold">Purchase Payment</div><div class="text-xs text-slate-500">Pembayaran pembelian</div></span>
+              <span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-600">Soon</span>
+            </button>
+          </nav>
+
+          <div class="p-5 border-t border-slate-200">
+            <div class="text-xs text-slate-500">Tips</div>
+            <div class="text-sm text-slate-600 mt-1">
+              Modul aktif saat ini: <span id="activeModuleName" class="font-semibold text-slate-900">Jurnal Voucher</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Content -->
+      <section class="lg:col-span-9 space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center justify-between">
+          <div>
+            <div class="text-xs text-slate-500">Module</div>
+            <h2 id="moduleTitle" class="text-xl font-bold">Jurnal Voucher</h2>
+            <p id="moduleDesc" class="text-sm text-slate-600 mt-1">
+              Upload Excel → Preview → Validasi → Import ke Accurate.
+            </p>
+          </div>
+
+          <div class="text-right">
+            <div class="text-xs text-slate-500">Status</div>
+            <div id="moduleStatusPill"
+                 class="inline-flex items-center rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold">
+              Ready
+            </div>
+          </div>
+        </div>
+
+        <!-- (Di sini konten modul journal voucher kamu bisa tempel dari versi sebelumnya) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+          <div class="text-sm text-slate-600">
+            Dashboard siap. (Konten modul akan kita pasang step berikutnya.)
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+</div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  function show(el, yes=true) {
+    if (!el) return;
+    el.classList.toggle("hidden", !yes);
+  }
+
+  function setGateError(msg) {
+    const el = $("gateError");
+    if (!msg) { show(el, false); el.textContent = ""; return; }
+    el.textContent = msg;
+    show(el, true);
+  }
+
+  function getTenantFromHost() {
+    // acis.aca-aol.id -> acis
+    const h = (location.hostname || "").toLowerCase();
+    const parts = h.split(".");
+    if (parts.length >= 3) return parts[0];
+    return h; // fallback
+  }
+
+  async function checkAccess() {
+    $("yearNow").textContent = new Date().getFullYear();
+    $("yearNow2").textContent = new Date().getFullYear();
+
+    const tenant = getTenantFromHost();
+    $("landingTenantPill").textContent = `Tenant: ${tenant || "-"}`;
+    $("gateTenant").textContent = tenant || "-";
+    $("tenantBadge").textContent = `Tenant: ${tenant || "-"}`;
+
+    try {
+      const r = await fetch("/auth/status");
+      const s = await r.json();
+
+      // landing status
+      if (!s.configured) {
+        $("landingAccessStatus").textContent = "Tenant belum terdaftar";
+        show($("landingPage"), true);
+        show($("gatePage"), false);
+        show($("appShell"), false);
+        return;
+      }
+
+      if (s.access_ok) {
+        // direct to dashboard
+        show($("landingPage"), false);
+        show($("gatePage"), false);
+        show($("appShell"), true);
+        initDashboard();
+        return;
+      }
+
+      // default show landing
+      $("landingAccessStatus").textContent = "Silakan masuk dengan kode akses";
+      show($("landingPage"), true);
+      show($("gatePage"), false);
+      show($("appShell"), false);
+    } catch {
+      $("landingAccessStatus").textContent = "Gagal cek status akses (backend error)";
+      show($("landingPage"), true);
+      show($("gatePage"), false);
+      show($("appShell"), false);
+    }
+  }
+
+  function goLogin() {
+    setGateError("");
+    show($("landingPage"), false);
+    show($("gatePage"), true);
+    show($("appShell"), false);
+    $("accessCode").focus();
+  }
+
+  function backToLanding() {
+    setGateError("");
+    show($("landingPage"), true);
+    show($("gatePage"), false);
+    show($("appShell"), false);
+  }
+
+  // buttons landing -> login
+  $("btnGoLoginTop").addEventListener("click", goLogin);
+  $("btnGoLoginHero").addEventListener("click", goLogin);
+  $("btnGoLoginCard").addEventListener("click", goLogin);
+  $("btnGoLoginBottom").addEventListener("click", goLogin);
+  $("btnOpenLoginInfo").addEventListener("click", goLogin);
+
+  // back
+  $("btnBackToLanding").addEventListener("click", backToLanding);
+
+  // submit code
+  $("gateForm").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    setGateError("");
+    const btn = $("btnGateLogin");
+    btn.disabled = true;
+    btn.textContent = "Memproses...";
+
+    try {
+      const code = ($("accessCode").value || "").trim();
+      if (!code) throw new Error("Kode akses kosong.");
+      const res = await fetch("/auth/verify", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({ code })
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json.error || "Kode akses salah.");
+      location.reload();
+    } catch (e) {
+      setGateError(e.message || "Kode akses salah.");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Masuk";
+    }
+  });
+
+  // logout
+  $("btnLogout")?.addEventListener("click", async () => {
+    try {
+      await fetch("/auth/logout", { method: "POST", headers: {"Content-Type":"application/json"}, body: "{}" });
+      location.reload();
+    } catch (e) {
+      alert("Gagal logout");
+    }
+  });
+
+  // dashboard init (sementara hanya module switcher UI)
+  const MODULES = {
+    journal_voucher: { name: "Jurnal Voucher", desc: "Upload Excel → Preview → Validasi → Import ke Accurate.", ready: true },
+    payment: { name: "Payment", desc: "Import pembayaran.", ready: false },
+    deposit: { name: "Deposit", desc: "Import setoran.", ready: false },
+    sales_invoice: { name: "Sales Invoice", desc: "Import faktur penjualan.", ready: false },
+    sales_receipt: { name: "Sales Receipt", desc: "Import penerimaan penjualan.", ready: false },
+    sales_order: { name: "Sales Order", desc: "Import pesanan penjualan.", ready: false },
+    purchase_invoice: { name: "Purchase Invoice", desc: "Import faktur pembelian.", ready: false },
+    purchase_payment: { name: "Purchase Payment", desc: "Import pembayaran pembelian.", ready: false },
+  };
+
+  function activateModule(key) {
+    const m = MODULES[key] || MODULES.journal_voucher;
+    $("activeModuleName").textContent = m.name;
+    $("moduleTitle").textContent = m.name;
+    $("moduleDesc").textContent = m.desc;
+
+    if (m.ready) {
+      $("moduleStatusPill").className = "inline-flex items-center rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold";
+      $("moduleStatusPill").textContent = "Ready";
+    } else {
+      $("moduleStatusPill").className = "inline-flex items-center rounded-full bg-slate-100 text-slate-700 px-3 py-1 text-xs font-semibold";
+      $("moduleStatusPill").textContent = "Coming soon";
+    }
+
+    document.querySelectorAll(".module-btn").forEach(btn => {
+      const isActive = btn.dataset.module === key;
+      btn.classList.toggle("bg-primary/10", isActive);
+      btn.classList.toggle("border", isActive);
+      btn.classList.toggle("border-primary/20", isActive);
+    });
+  }
+
+  function initDashboard() {
+    document.querySelectorAll(".module-btn").forEach(btn => {
+      btn.addEventListener("click", () => activateModule(btn.dataset.module));
+    });
+    activateModule("journal_voucher");
+  }
+
+  // start
+  checkAccess();
+</script>
+
+</body>
+</html>

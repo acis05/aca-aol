@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+  <title>Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 flex items-center justify-center min-h-screen">
+
+<form method="post" class="bg-white p-6 rounded-xl w-96 shadow">
+  <h2 class="text-xl font-bold mb-4">Masuk dengan Kode Akses</h2>
+
+  {% if error %}
+    <div class="text-red-600 text-sm mb-3">{{ error }}</div>
+  {% endif %}
+
+  <input name="code"
+         placeholder="Contoh: DEMO-ACA-001"
+         class="w-full border rounded px-3 py-2 mb-4">
+
+  <button class="w-full bg-orange-500 text-white py-2 rounded">
+    Masuk
+  </button>
+</form>
+
+</body>
+</html>
