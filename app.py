@@ -65,6 +65,20 @@ TENANT_ACCESS_CODES = os.getenv("TENANT_ACCESS_CODES", "").strip()
 app = FastAPI(title="Accurate Importer (SaaS)")
 templates = Jinja2Templates(directory="templates")
 
+from fastapi.responses import RedirectResponse
+
+@app.middleware("http")
+async def force_www_redirect(request: Request, call_next):
+    host = request.headers.get("host", "")
+    if host == "aca-aol.id":
+        url = request.url.replace(netloc="www.aca-aol.id")
+        return RedirectResponse(str(url), status_code=301)
+    return await call_next(request)
+
+from fastapi.staticfiles import StaticFiles
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 # In-memory job store (MVP)
 JOBS: Dict[str, Dict[str, Any]] = {}
 
@@ -102,22 +116,24 @@ TENANT_CODES = _parse_tenant_codes()
 
 
 def get_tenant_slug_from_request(request: Request) -> str:
-    """
-    - Kalau TENANT_BASE_DOMAIN diset dan host = {tenant}.base -> tenant
-    - Kalau tidak ada domain / Railway / localhost -> "default"
-    """
-    host = (request.headers.get("x-forwarded-host") or request.headers.get("host") or "").lower()
-    host = host.split(":")[0].strip()
+    host = (request.headers.get("x-forwarded-host")
+            or request.headers.get("host")
+            or "").lower().split(":")[0]
 
     if not host:
         return "default"
+
+    # treat www as default tenant
+    if host.startswith("www."):
+        return "default"
+
     if host in ("localhost", "127.0.0.1"):
         return "default"
 
     if TENANT_BASE_DOMAIN and host.endswith(TENANT_BASE_DOMAIN):
         left = host[: -len(TENANT_BASE_DOMAIN)].rstrip(".")
-        slug = left.split(".")[0].strip().lower() if left else "default"
-        return slug or "default"
+        slug = left.split(".")[0].strip().lower()
+        return slug if slug and slug != "www" else "default"
 
     return "default"
 
