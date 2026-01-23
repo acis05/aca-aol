@@ -116,24 +116,25 @@ TENANT_CODES = _parse_tenant_codes()
 
 
 def get_tenant_slug_from_request(request: Request) -> str:
-    host = (request.headers.get("x-forwarded-host")
-            or request.headers.get("host")
-            or "").lower().split(":")[0]
+    host = (request.headers.get("x-forwarded-host") or request.headers.get("host") or "").lower()
+    host = host.split(":")[0].strip()
 
     if not host:
         return "default"
 
-    # treat www as default tenant
-    if host.startswith("www."):
+    # localhost / railway
+    if host in ("localhost", "127.0.0.1") or host.endswith(".railway.app"):
         return "default"
 
-    if host in ("localhost", "127.0.0.1"):
+    # ROOT & WWW = default tenant
+    if host in ("aca-aol.id", "www.aca-aol.id"):
         return "default"
 
+    # subdomain customer (customer.aca-aol.id)
     if TENANT_BASE_DOMAIN and host.endswith(TENANT_BASE_DOMAIN):
         left = host[: -len(TENANT_BASE_DOMAIN)].rstrip(".")
         slug = left.split(".")[0].strip().lower()
-        return slug if slug and slug != "www" else "default"
+        return slug or "default"
 
     return "default"
 
