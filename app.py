@@ -116,11 +116,8 @@ def get_host(request: Request) -> str:
 
 
 def get_tenant_slug_from_request(request: Request) -> str:
-    """
-    - login.aca-aol.id -> login
-    - abc.aca-aol.id -> abc
-    - kalau bukan domain itu -> default
-    """
+    return "default"
+
     host = get_host(request)
     if not host:
         return "default"
@@ -189,10 +186,12 @@ app.add_middleware(AccessGateMiddleware)
 app.add_middleware(
     SessionMiddleware,
     secret_key=SESSION_SECRET,
-    same_site=COOKIE_SAMESITE,
-    https_only=HTTPS_ONLY if APP_ENV == "prod" else False,
-    domain=(COOKIE_DOMAIN or None),  # kosongkan dulu biar host-only
+    same_site="lax",
+    https_only=True,
+    domain="login.aca-aol.id",
 )
+
+app.add_middleware(AccessGateMiddleware)
 
 
 # =========================
