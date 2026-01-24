@@ -617,6 +617,8 @@
           credentials: "include",
           body: JSON.stringify({ code })
         });
+        const st = await fetch("/auth/status", { credentials: "include" }).then(r => r.json());
+
         const data = await res.json();
         if(!res.ok || !data.ok){
           setMsg(data.error || "Gagal verifikasi kode.", "err");
