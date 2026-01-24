@@ -277,21 +277,19 @@ def auth_logout(request: Request):
 # =========================
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
-    if request.session.get("access_ok"):
-        return RedirectResponse("/app", status_code=302)
+    # Root tetap landing (jangan auto lempar)
     return templates.TemplateResponse("index.html", {"request": request})
 
+@app.get("/lp", response_class=HTMLResponse)
+def landing(request: Request):
+    # Alias landing juga
+    return templates.TemplateResponse("index.html", {"request": request})
 
 @app.get("/app", response_class=HTMLResponse)
 def app_home(request: Request):
     if not request.session.get("access_ok"):
         return RedirectResponse("/", status_code=302)
-
-    # biar kalau app.html belum ada, errornya jelas
-    try:
-        return templates.TemplateResponse("app.html", {"request": request})
-    except Exception as e:
-        return HTMLResponse(f"Template app.html belum ada / error render: {e}", status_code=500)
+    return templates.TemplateResponse("app.html", {"request": request})
 
 
 # =========================
