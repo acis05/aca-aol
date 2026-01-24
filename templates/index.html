@@ -410,20 +410,13 @@
 
         const data = await safeReadJson(res);
 
-        if(!res.ok || !data.ok){
-          setMsg(data.error || "Gagal verifikasi kode.", "err");
+        if (data.ok) {
+          setMsg("Berhasil! Akses sudah aktif.", "ok");
           await refreshAuthStatus();
-          return;
+          setTimeout(() => {
+          window.location.href = "/app";
+        }, 600);
         }
-
-        setMsg("Berhasil! Mengalihkan ke aplikasi…", "ok");
-        await refreshAuthStatus();
-        window.location.href = "/app";
-      }catch(e){
-        setMsg("Error koneksi / fetch gagal. Coba refresh halaman.", "err");
-      }finally{
-        btn.disabled = false;
-      }
     });
 
     $("year").textContent = new Date().getFullYear();

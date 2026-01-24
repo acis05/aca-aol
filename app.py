@@ -141,15 +141,13 @@ def get_tenant_slug_from_request(request: Request) -> str:
 
 
 def is_public_path(path: str) -> bool:
-    if path in ("/", "/favicon.ico", "/app"):
+    if path in ("/", "/lp", "/favicon.ico"):
         return True
-    if path.startswith("/oauth/"):
+    if path.startswith("/static/"):
         return True
     if path.startswith("/auth/"):
         return True
-    if path.startswith("/templates/"):
-        return True
-    if path.startswith("/static/"):
+    if path.startswith("/oauth/"):
         return True
     if path.startswith("/health"):
         return True
@@ -157,7 +155,11 @@ def is_public_path(path: str) -> bool:
 
 
 def is_protected_path(path: str) -> bool:
-    return path.startswith("/api/") or path.startswith("/accurate/")
+    return (
+        path.startswith("/app")
+        or path.startswith("/api/")
+        or path.startswith("/accurate/")
+    )
 
 
 # =========================
@@ -199,19 +201,11 @@ class AccessGateMiddleware(BaseHTTPMiddleware):
 
         if is_protected_path(path):
             if not request.session.get("access_ok"):
-                return JSONResponse({"ok": False, "error": "Unauthorized. Masukkan kode akses dulu."}, status_code=401)
-
-            tenant = get_tenant_slug_from_request(request)
-            sess_tenant = (request.session.get("tenant") or "default").lower()
-            if tenant != sess_tenant:
-                return JSONResponse({"ok": False, "error": "Tenant session tidak cocok. Silakan login ulang."}, status_code=401)
+                return RedirectResponse("/", status_code=302)
 
         return await call_next(request)
 
-
-app.add_middleware(AccessGateMiddleware)
-
-
+        
 # =========================
 # AUTH ROUTES (ACCESS CODE)
 # =========================
