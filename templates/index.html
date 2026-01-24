@@ -578,63 +578,71 @@
     </footer>
   </div>
 
-  <script>
-    // ===== Helpers =====
-    const $ = (id) => document.getElementById(id);
+<script>
+  const $ = (id) => document.getElementById(id);
 
-    function setMsg(text, type){
-      const el = $("msg");
-      el.textContent = text || "";
-      el.className = "msg" + (type ? " " + type : "");
-    }
+  function setMsg(text, type){
+    const el = $("msg");
+    el.textContent = text || "";
+    el.className = "msg" + (type ? " " + type : "");
+  }
 
-    async function refreshAuthStatus(){
-      try{
-        const res = await fetch("/auth/status", { credentials: "include" });
-        const data = await res.json();
-        $("authStatus").textContent = data.access_ok ? "Akses Aktif" : "Belum Login";
-      }catch(e){
-        $("authStatus").textContent = "Unknown";
+  async function refreshAuthStatus(){
+    try{
+      const res = await fetch("/auth/status", { credentials: "include" });
+      const data = await res.json();
+      $("authStatus").textContent = data.access_ok ? "Akses Aktif" : "Belum Login";
+
+      // OPTIONAL: kalau sudah akses aktif, langsung arahkan ke app
+      if (data.access_ok && location.pathname === "/") {
+        // kasih jeda kecil biar UI sempat update
+        setTimeout(() => { window.location.href = "/app"; }, 200);
       }
+    }catch(e){
+      $("authStatus").textContent = "Unknown";
     }
+  }
 
-    // ===== Buttons =====
-    $("btnLoginAccurate").addEventListener("click", () => {
-      window.location.href = "/oauth/login";
-    });
+  $("btnLoginAccurate").addEventListener("click", () => {
+    window.location.href = "/oauth/login";
+  });
 
-    $("btnVerify").addEventListener("click", async () => {
-      setMsg("Memeriksa kode…");
-      const code = ($("accessCode").value || "").trim();
-      if(!code){
-        setMsg("Kode akses masih kosong.", "err");
+  $("btnVerify").addEventListener("click", async () => {
+    setMsg("Memeriksa kode…");
+    const code = ($("accessCode").value || "").trim();
+    if(!code){
+      setMsg("Kode akses masih kosong.", "err");
+      return;
+    }
+    try{
+      const res = await fetch("/auth/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ code })
+      });
+      const data = await res.json();
+
+      if(!res.ok || !data.ok){
+        setMsg(data.error || "Gagal verifikasi kode.", "err");
+        await refreshAuthStatus();
         return;
       }
-      try{
-        const res = await fetch("/auth/verify", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ code })
-        });
-        const st = await fetch("/auth/status", { credentials: "include" }).then(r => r.json());
 
-        const data = await res.json();
-        if(!res.ok || !data.ok){
-          setMsg(data.error || "Gagal verifikasi kode.", "err");
-          await refreshAuthStatus();
-          return;
-        }
-        setMsg("Berhasil! Akses sudah aktif.", "ok");
-        await refreshAuthStatus();
-      }catch(e){
-        setMsg("Error koneksi. Coba ulang.", "err");
-      }
-    });
+      setMsg("Berhasil! Akses sudah aktif. Mengarahkan ke aplikasi…", "ok");
+      await refreshAuthStatus();
 
-    // Init
-    $("year").textContent = new Date().getFullYear();
-    refreshAuthStatus();
-  </script>
+      // INI YANG PENTING: redirect ke app
+      setTimeout(() => { window.location.href = "/app"; }, 300);
+
+    }catch(e){
+      setMsg("Error koneksi. Coba ulang.", "err");
+    }
+  });
+
+  $("year").textContent = new Date().getFullYear();
+  refreshAuthStatus();
+</script>
+
 </body>
 </html>
