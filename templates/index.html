@@ -629,16 +629,14 @@
         return;
       }
 
-      setMsg("Berhasil! Akses sudah aktif. Mengarahkan ke aplikasi…", "ok");
-      await refreshAuthStatus();
+    // ✅ SUKSES
+    setMsg("Berhasil! Akses sudah aktif. Mengalihkan ke aplikasi…", "ok");
+    await refreshAuthStatus();
 
-      // INI YANG PENTING: redirect ke app
-      setTimeout(() => { window.location.href = "/app"; }, 300);
-
-    }catch(e){
-      setMsg("Error koneksi. Coba ulang.", "err");
-    }
-  });
+    // ⏩ redirect ke app
+    setTimeout(() => {
+    window.location.href = "/app";
+    }, 600);
 
   $("year").textContent = new Date().getFullYear();
   refreshAuthStatus();
