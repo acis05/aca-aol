@@ -2,427 +2,1334 @@
 <html lang="id">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ACA-AOL — Import Excel to Accurate Online</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-  <style>
-    :root{
-      --bg:#fff7ed;
-      --card:#ffffff;
-      --text:#111827;
-      --muted:#4b5563;
-      --muted2:#6b7280;
-      --stroke:rgba(17,24,39,.10);
-      --shadow: 0 18px 60px rgba(17,24,39,.10);
-
-      --brand:#f97316;
-      --brand2:#fb923c;
-      --brand3:#ea580c;
-      --green:#16a34a;
-      --chip:#fff1e6;
-      --chipText:#9a3412;
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ACA AOL — Solusi Impor Excel ke Accurate Online</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#f97316',
+            primaryDark: '#ea580c'
+          }
+        }
+      }
     }
-
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      font-family:"Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      color:var(--text);
-      background:
-        radial-gradient(1200px 700px at 10% 0%, rgba(249,115,22,.16), transparent 60%),
-        radial-gradient(900px 600px at 95% 10%, rgba(234,88,12,.12), transparent 55%),
-        radial-gradient(900px 700px at 35% 110%, rgba(251,146,60,.18), transparent 60%),
-        linear-gradient(180deg, #fff7ed, #fff);
-      letter-spacing:-0.01em;
-    }
-
-    a{ color:inherit; text-decoration:none; }
-    .wrap{ max-width:1100px; margin:0 auto; padding:28px 18px 44px; }
-
-    .top{ display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:22px; }
-    .brandRow{ display:flex; align-items:center; gap:12px; min-width:200px; }
-    .logo{ width:220px; max-width:65vw; height:auto; display:block; filter: drop-shadow(0 10px 22px rgba(234,88,12,.12)); }
-    .topRight{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:10px 12px; border:1px solid var(--stroke);
-      background:rgba(255,255,255,.75); backdrop-filter: blur(8px);
-      border-radius:999px; font-size:13px; color:var(--muted);
-    }
-    .pill strong{ color:var(--text); font-weight:700; }
-    .dot{ width:8px; height:8px; border-radius:999px; background:var(--green); box-shadow: 0 0 0 4px rgba(22,163,74,.12); }
-
-    .hero{ display:grid; grid-template-columns: 1.15fr .85fr; gap:18px; align-items:stretch; margin-top:8px; }
-    @media (max-width: 900px){
-      .hero{ grid-template-columns: 1fr; }
-      .top{ flex-direction:column; align-items:flex-start; }
-      .topRight{ justify-content:flex-start; }
-    }
-
-    .card{ background:rgba(255,255,255,.86); border:1px solid var(--stroke); border-radius:22px; box-shadow: var(--shadow); overflow:hidden; }
-    .heroLeft{ padding:26px 26px 22px; position:relative; }
-
-    .badge{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 12px; border-radius:999px;
-      background:var(--chip); color:var(--chipText);
-      font-weight:700; font-size:13px;
-      border:1px solid rgba(249,115,22,.18);
-      margin-bottom:14px;
-    }
-    .badge span{ width:8px; height:8px; border-radius:999px; background:var(--brand); }
-
-    h1{ margin:0 0 10px; font-size:44px; line-height:1.08; letter-spacing:-0.045em; }
-    .grad{
-      background: linear-gradient(90deg, var(--brand3), var(--brand), #22c55e);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-    }
-    .sub{ margin:0 0 18px; font-size:16px; line-height:1.65; color:var(--muted); font-weight:500; max-width:62ch; }
-
-    .points{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin:14px 0 18px; }
-    @media (max-width: 520px){
-      .points{ grid-template-columns: 1fr; }
-      h1{ font-size:36px; }
-    }
-    .pt{
-      display:flex; gap:10px; align-items:flex-start;
-      padding:12px 12px; border:1px solid rgba(17,24,39,.08);
-      border-radius:16px; background:rgba(255,255,255,.70);
-    }
-    .ic{
-      width:28px; height:28px; border-radius:10px;
-      background:rgba(249,115,22,.14);
-      display:grid; place-items:center;
-      flex:0 0 auto; color:var(--brand3); font-weight:900;
-    }
-    .pt b{ display:block; font-size:14px; margin-bottom:2px; }
-    .pt small{ color:var(--muted2); line-height:1.45; font-size:13px; }
-
-    .ctaRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px; }
-    .btn{
-      appearance:none; border:0; cursor:pointer;
-      border-radius:14px; padding:12px 14px;
-      font-weight:800; font-size:14px;
-      letter-spacing:-0.01em;
-      display:inline-flex; align-items:center; gap:10px;
-      transition: transform .06s ease, box-shadow .2s ease, background .2s ease;
-    }
-    .btn:active{ transform: translateY(1px); }
-    .btnPrimary{
-      background: linear-gradient(135deg, var(--brand3), var(--brand));
-      color:white; box-shadow: 0 18px 40px rgba(234,88,12,.22);
-    }
-    .btnPrimary:hover{ box-shadow: 0 22px 55px rgba(234,88,12,.28); }
-    .btnPrimary:disabled{ opacity:.65; cursor:not-allowed; }
-    .btnGhost{ background:rgba(255,255,255,.85); border:1px solid rgba(17,24,39,.12); color:var(--text); }
-    .btnGhost:hover{ background:#fff; }
-    .hint{ color:var(--muted2); font-size:13px; margin-top:8px; }
-
-    .heroRight{ padding:18px; display:flex; flex-direction:column; gap:12px; }
-    .sectionTitle{ font-weight:900; letter-spacing:-0.02em; margin:2px 0 6px; font-size:14px; color:var(--text); }
-    .priceGrid{ display:grid; gap:10px; }
-    .priceCard{ border:1px solid rgba(17,24,39,.10); border-radius:18px; background:rgba(255,255,255,.80); padding:14px; }
-    .priceTop{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:8px; }
-    .priceTop b{ font-size:14px; font-weight:900; }
-    .tag{
-      font-size:12px; font-weight:800;
-      color:var(--chipText); background:var(--chip);
-      border:1px solid rgba(249,115,22,.18);
-      padding:6px 10px; border-radius:999px; white-space:nowrap;
-    }
-    .price{ font-size:22px; font-weight:900; letter-spacing:-0.03em; margin:0 0 2px; }
-    .per{ margin:0; font-size:13px; color:var(--muted2); line-height:1.5; }
-
-    .divider{ height:1px; background:rgba(17,24,39,.08); margin:4px 0; }
-
-    .accessBox{ border:1px solid rgba(17,24,39,.10); border-radius:18px; background:rgba(255,255,255,.85); padding:14px; }
-    .field{ display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
-    input[type="password"], input[type="text"]{
-      flex:1 1 180px;
-      padding:12px 12px;
-      border-radius:14px;
-      border:1px solid rgba(17,24,39,.14);
-      outline:none;
-      font-size:14px;
-      font-family:inherit;
-      background:rgba(255,255,255,.95);
-    }
-    input:focus{
-      border-color: rgba(249,115,22,.5);
-      box-shadow: 0 0 0 4px rgba(249,115,22,.16);
-    }
-    .msg{ margin-top:10px; font-size:13px; color:var(--muted); line-height:1.5; min-height:18px; white-space:pre-wrap; }
-    .msg.ok{ color:#166534; }
-    .msg.err{ color:#991b1b; }
-
-    .modules{ margin-top:18px; padding:18px 20px; }
-    .modules h2{ margin:0 0 10px; font-size:18px; letter-spacing:-0.03em; }
-    .chips{ display:flex; flex-wrap:wrap; gap:8px; }
-    .chip{
-      font-size:12.5px; font-weight:700;
-      padding:8px 10px; border-radius:999px;
-      border:1px solid rgba(17,24,39,.10);
-      background:rgba(255,255,255,.75);
-      color:#1f2937;
-    }
-    .chip.more{
-      background:rgba(249,115,22,.10);
-      border-color: rgba(249,115,22,.18);
-      color:#9a3412;
-    }
-
-    footer{ margin-top:16px; padding:18px 6px 4px; color:var(--muted2); font-size:13px; line-height:1.6; }
-    footer b{ color:var(--text); }
-    .footGrid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
-    @media (max-width: 820px){ .footGrid{ grid-template-columns: 1fr; } }
-    .footCard{
-      border:1px solid rgba(17,24,39,.08);
-      border-radius:18px;
-      background:rgba(255,255,255,.65);
-      padding:14px;
-    }
-    .wa{
-      display:inline-flex; align-items:center; gap:8px;
-      font-weight:800; color:#065f46;
-      background:rgba(16,185,129,.10);
-      border:1px solid rgba(16,185,129,.18);
-      padding:8px 10px; border-radius:999px;
-      margin-top:8px;
-    }
-    .smallNote{ margin-top:8px; font-size:12px; color:var(--muted2); }
-  </style>
+  </script>
 </head>
 
-<body>
-  <div class="wrap">
-    <div class="top">
-      <div class="brandRow">
-        <img class="logo" src="/static/logo-aca-aol.png" alt="ACA-AOL Logo">
-      </div>
+<body class="bg-slate-50 text-slate-900 min-h-screen">
 
-      <div class="topRight">
-        <div class="pill"><span class="dot"></span> Status: <strong id="authStatus">Checking…</strong></div>
-        <a class="pill" href="tel:087884538950">📞 <strong>087884538950</strong></a>
-        <a class="pill" target="_blank" rel="noopener" href="https://wa.me/6287884538950">💬 WhatsApp</a>
-      </div>
-    </div>
-
-    <div class="hero">
-      <section class="card heroLeft">
-        <div class="badge"><span></span> Solusi cepat import data ke Accurate Online</div>
-
-        <h1>
-          Import Excel ke <span class="grad">Accurate Online</span><br/>
-          lebih cepat, rapi, dan aman.
-        </h1>
-
-        <p class="sub">
-          ACA-AOL membantu tim finance & admin memindahkan transaksi dari Excel ke Accurate Online tanpa input manual berulang.
-          Cocok untuk implementasi awal, migrasi data, dan operasional harian.
-        </p>
-
-        <div class="points">
-          <div class="pt">
-            <div class="ic">✓</div>
-            <div>
-              <b>Template siap pakai</b>
-              <small>Format kolom jelas, tinggal isi & upload.</small>
-            </div>
-          </div>
-          <div class="pt">
-            <div class="ic">⚡</div>
-            <div>
-              <b>Validasi sebelum kirim</b>
-              <small>Deteksi error dulu biar minim gagal import.</small>
-            </div>
-          </div>
-          <div class="pt">
-            <div class="ic">🔒</div>
-            <div>
-              <b>Akses pakai kode</b>
-              <small>Halaman import terkunci dengan access code.</small>
-            </div>
-          </div>
-          <div class="pt">
-            <div class="ic">🏢</div>
-            <div>
-              <b>Siap multi-customer</b>
-              <small>Subdomain untuk customer berlangganan.</small>
-            </div>
-          </div>
+<!-- =========================
+     1) LANDING PAGE
+========================= -->
+<section id="landingPage" class="min-h-screen">
+  <header class="bg-white/80 backdrop-blur border-b border-slate-200 sticky top-0 z-10">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-primary/10 text-primary font-extrabold">
+          A
         </div>
-
-        <div class="ctaRow">
-          <button class="btn btnPrimary" id="btnLoginAccurate" type="button">🔐 Login Accurate (OAuth)</button>
-          <a class="btn btnGhost" href="#paket">💳 Lihat Paket & Harga</a>
-          <a class="btn btnGhost" target="_blank" rel="noopener"
-             href="https://wa.me/6287884538950?text=Halo%20ACA-AOL,%20saya%20mau%20tanya%20paket%20langganan%20dan%20modul.">
-            💬 Konsultasi via WhatsApp
-          </a>
-        </div>
-        <div class="hint">
-          Setelah login Accurate, masukkan <b>kode akses</b> untuk membuka fitur import.
-        </div>
-      </section>
-
-      <aside class="card heroRight" id="paket">
         <div>
-          <div class="sectionTitle">Paket ACA-AOL</div>
-          <div class="priceGrid">
-            <div class="priceCard">
-              <div class="priceTop">
-                <b>Langganan 3 Bulan</b>
-                <span class="tag">Per Modul</span>
-              </div>
-              <p class="price">Rp 450.000</p>
-              <p class="per">1 modul / 3 bulan — cocok untuk trial & kebutuhan periodik.</p>
-            </div>
-
-            <div class="priceCard">
-              <div class="priceTop">
-                <b>Langganan 1 Tahun</b>
-                <span class="tag">Hemat</span>
-              </div>
-              <p class="price">Rp 1.250.000</p>
-              <p class="per">1 modul / 1 tahun — paling ekonomis untuk operasional rutin.</p>
-            </div>
-          </div>
+          <div class="text-sm font-bold leading-tight">ACA AOL</div>
+          <div class="text-xs text-slate-500 leading-tight">Accurate Online Importer</div>
         </div>
+      </div>
 
-        <div class="divider"></div>
-
-        <div class="accessBox">
-          <div class="sectionTitle">Masuk (Access Code)</div>
-          <div style="font-size:13px;color:var(--muted2);line-height:1.5;">
-            Masukkan kode akses untuk membuka endpoint import (API & halaman internal).
-          </div>
-
-          <div class="field">
-            <input id="accessCode" type="password" placeholder="Masukkan kode akses…" autocomplete="one-time-code" />
-            <button class="btn btnPrimary" id="btnVerify" type="button">Buka Akses</button>
-          </div>
-
-          <div id="msg" class="msg"></div>
-
-          <div class="smallNote">
-            Belum punya kode? Hubungi WhatsApp: <b>087884538950</b>
-          </div>
-        </div>
-      </aside>
+      <div class="flex items-center gap-2">
+        <button id="btnGoLoginTop"
+          class="rounded-xl bg-primary text-white px-4 py-2 text-sm font-semibold hover:bg-primaryDark transition">
+          Masuk
+        </button>
+      </div>
     </div>
+  </header>
 
-    <section class="card modules">
-      <h2>Modul yang tersedia</h2>
-      <div class="chips">
-        <span class="chip">Jurnal Voucher</span>
-        <span class="chip">Payment</span>
-        <span class="chip">Deposit</span>
-        <span class="chip">Bank Transfer</span>
-        <span class="chip">Sales Invoice</span>
-        <span class="chip">Sales Receipt</span>
-        <span class="chip more">dll.</span>
+  <main>
+    <section class="max-w-7xl mx-auto px-6 pt-10 pb-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-7">
+          <div class="inline-flex items-center gap-2 rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold">
+            SaaS Import Transaksi Accurate Online
+          </div>
+          <h1 class="text-4xl lg:text-5xl font-extrabold tracking-tight mt-4">
+            Import transaksi Accurate Online dari Excel, rapi & cepat.
+          </h1>
+          <p class="text-slate-600 mt-4 text-lg leading-relaxed">
+            ACA AOL membantu tim finance mengimpor transaksi (mulai dari <b>Jurnal Voucher</b> & <b>Sales Invoice</b>)
+            tanpa ribet mapping manual. Cocok untuk volume tinggi, multi database, dan kebutuhan standardisasi template.
+          </p>
+
+          <div class="mt-6 flex flex-col sm:flex-row gap-3">
+            <button id="btnGoLoginHero"
+              class="rounded-xl bg-primary text-white px-5 py-3 text-sm font-semibold hover:bg-primaryDark transition">
+              Masuk dengan Kode Akses
+            </button>
+            <a href="#features"
+              class="rounded-xl bg-white border border-slate-200 px-5 py-3 text-sm font-semibold hover:bg-slate-50 transition text-center">
+              Lihat Fitur
+            </a>
+          </div>
+
+          <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+              <div class="text-xs text-slate-500">Workflow</div>
+              <div class="font-semibold mt-1">Preview → Validasi → Import</div>
+            </div>
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+              <div class="text-xs text-slate-500">Multi DB</div>
+              <div class="font-semibold mt-1">Pilih Data Usaha</div>
+            </div>
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+              <div class="text-xs text-slate-500">Audit-friendly</div>
+              <div class="font-semibold mt-1">Log hasil import</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5">
+          <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="text-xs text-slate-500">Status Akses</div>
+                <div id="landingAccessStatus" class="font-semibold">Checking...</div>
+              </div>
+              <span id="landingTenantPill"
+                class="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-semibold">
+                Tenant: -
+              </span>
+            </div>
+
+            <div class="mt-5 space-y-3">
+              <div class="rounded-2xl bg-slate-50 border border-slate-200 p-4">
+                <div class="text-sm font-semibold">Cara mulai</div>
+                <ol class="mt-2 text-sm text-slate-600 list-decimal ml-5 space-y-1">
+                  <li>Masuk pakai <b>kode akses</b> yang kami berikan</li>
+                  <li>Login OAuth Accurate untuk izin API</li>
+                  <li>Pilih Data Usaha</li>
+                  <li>Upload Excel → Preview → Validasi → Import</li>
+                </ol>
+              </div>
+
+              <button id="btnGoLoginCard"
+                class="w-full rounded-xl bg-primary text-white px-4 py-2 text-sm font-semibold hover:bg-primaryDark transition">
+                Masuk
+              </button>
+
+              <p class="text-xs text-slate-500">
+                Catatan: tiap customer akan dapat <b>subdomain</b> sendiri (mis. <span class="font-mono">acis.aca-aol.id</span>).
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <footer>
-      <div class="footGrid">
-        <div class="footCard">
-          <b>Kontak</b><br>
-          WhatsApp / Telepon: <span class="wa">📞 087884538950</span><br>
-          <div class="smallNote">Jam operasional mengikuti jam kantor.</div>
+    <section id="features" class="max-w-7xl mx-auto px-6 pb-14">
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-8">
+        <h2 class="text-2xl font-extrabold">Fitur utama</h2>
+        <p class="text-slate-600 mt-1">Dibuat untuk operasional finance harian yang butuh rapi, cepat, dan minim error.</p>
+
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="rounded-2xl border border-slate-200 p-5">
+            <div class="text-primary font-bold">Validasi otomatis</div>
+            <div class="text-sm text-slate-600 mt-1">Cek kolom wajib, format tanggal, balance debit-kredit, dll.</div>
+          </div>
+          <div class="rounded-2xl border border-slate-200 p-5">
+            <div class="text-primary font-bold">Log mudah dibaca</div>
+            <div class="text-sm text-slate-600 mt-1">Tahu transaksi mana sukses/gagal, plus pesan error yang jelas.</div>
+          </div>
+          <div class="rounded-2xl border border-slate-200 p-5">
+            <div class="text-primary font-bold">Multi database</div>
+            <div class="text-sm text-slate-600 mt-1">Dalam 1 akun Accurate, bisa pilih Data Usaha yang aktif.</div>
+          </div>
         </div>
-        <div class="footCard">
-          <b>Alamat Kantor</b><br>
-          PT. Aneka Cipta Informasi Solusindo (ACIS Indonesia)<br>
-          Ruko Viko Blok AX-05, The Green Court Lake Residence,<br>
-          Cengkareng Timur, Cengkareng, Jakarta Barat
+
+        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+          <button id="btnGoLoginBottom"
+            class="rounded-xl bg-primary text-white px-5 py-3 text-sm font-semibold hover:bg-primaryDark transition">
+            Masuk sekarang
+          </button>
+          <button id="btnOpenLoginInfo"
+            class="rounded-xl bg-white border border-slate-200 px-5 py-3 text-sm font-semibold hover:bg-slate-50 transition">
+            Cara login
+          </button>
         </div>
       </div>
-      <div class="smallNote" style="margin-top:10px;">
-        © <span id="year"></span> ACA-AOL — Import Excel to Accurate Online.
+    </section>
+
+    <footer class="pb-10">
+      <div class="max-w-7xl mx-auto px-6 text-xs text-slate-500">
+        © <span id="yearNow"></span> ACA AOL — Accurate Online Importer
       </div>
     </footer>
+  </main>
+</section>
+
+<!-- =========================
+     2) GATE LOGIN
+========================= -->
+<section id="gatePage" class="hidden min-h-screen">
+  <div class="min-h-screen flex items-center justify-center px-6">
+    <div class="w-full max-w-md">
+      <div class="text-center mb-6">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 text-primary font-bold">
+          AO
+        </div>
+        <h1 class="text-2xl font-extrabold mt-3">Masuk ke Dashboard</h1>
+        <p class="text-sm text-slate-600 mt-1">
+          Masukkan <b>kode akses</b> untuk tenant ini.
+        </p>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-xs text-slate-500">Tenant / Subdomain</div>
+            <div id="gateTenant" class="font-semibold">-</div>
+          </div>
+          <span id="gateStatusPill"
+            class="text-xs px-3 py-1 rounded-full bg-slate-100 text-slate-600">
+            Ready
+          </span>
+        </div>
+
+        <form id="gateForm" class="mt-5 space-y-3">
+          <div>
+            <label class="block text-sm font-medium">Kode Akses</label>
+            <input id="accessCode" type="password" autocomplete="off" inputmode="text"
+              placeholder="Masukkan kode akses"
+              class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:outline-none" />
+            <p class="text-xs text-slate-500 mt-2">
+              Kode ini diberikan oleh admin saat langganan aktif.
+            </p>
+          </div>
+
+          <button id="btnGateLogin" type="submit"
+            class="w-full rounded-xl bg-primary text-white px-4 py-2 text-sm font-semibold hover:bg-primaryDark transition disabled:opacity-60">
+            Masuk
+          </button>
+
+          <div id="gateError" class="hidden text-sm text-rose-700"></div>
+
+          <div class="pt-3 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
+            <button id="btnBackToLanding" type="button" class="hover:text-slate-700 font-semibold">
+              ← Kembali
+            </button>
+            <span>Butuh bantuan? hubungi admin</span>
+          </div>
+        </form>
+      </div>
+
+      <div class="text-center text-xs text-slate-500 mt-4">
+        © <span id="yearNow2"></span> ACA AOL
+      </div>
+    </div>
   </div>
+</section>
 
-  <script>
-    const $ = (id) => document.getElementById(id);
+<!-- =========================
+     3) DASHBOARD
+========================= -->
+<div id="appShell" class="hidden">
+  <header class="bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div>
+        <h1 class="text-xl font-bold text-slate-900">Accurate Online Importer</h1>
+        <p class="text-sm text-slate-500">Dashboard • pilih modul • upload & import transaksi</p>
+      </div>
 
-    function setMsg(text, type){
-      const el = $("msg");
-      el.textContent = text || "";
-      el.className = "msg" + (type ? " " + type : "");
-    }
+      <div class="flex items-center gap-3">
+        <span id="tenantBadge"
+          class="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-semibold">
+          Tenant: -
+        </span>
 
-    async function safeReadJson(res){
-      const ct = (res.headers.get("content-type") || "").toLowerCase();
-      if(ct.includes("application/json")){
-        return await res.json();
+        <span id="oauthBadge"
+          class="text-xs px-3 py-1 rounded-full bg-slate-100 text-slate-600">
+          OAuth: checking...
+        </span>
+
+        <a href="/oauth/login"
+           class="inline-flex items-center justify-center rounded-xl bg-primary text-white px-4 py-2 text-sm font-semibold hover:bg-primaryDark transition">
+          Login Accurate
+        </a>
+
+        <button id="btnLogout"
+          class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold hover:bg-slate-50 transition">
+          Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- Sidebar -->
+      <aside class="lg:col-span-3">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="p-5 border-b border-slate-200">
+            <div class="text-xs text-slate-500">Modules</div>
+            <div class="text-lg font-semibold">Pilih Modul</div>
+            <p class="text-sm text-slate-600 mt-1">Pilih jenis transaksi yang mau diimpor.</p>
+          </div>
+
+          <nav class="p-2 space-y-1">
+            <button class="module-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-50 flex items-center justify-between"
+                    data-module="journal_voucher">
+              <span>
+                <div class="font-semibold">Jurnal Voucher</div>
+                <div class="text-xs text-slate-500">Import jurnal umum</div>
+              </span>
+              <span class="module-pill text-xs px-2 py-1 rounded-full bg-primary/10 text-primary font-semibold">Aktif</span>
+            </button>
+
+            <button class="module-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-50 flex items-center justify-between"
+                    data-module="sales_invoice">
+              <span><div class="font-semibold">Sales Invoice</div><div class="text-xs text-slate-500">Faktur penjualan</div></span>
+              <span class="module-pill text-xs px-2 py-1 rounded-full bg-primary/10 text-primary font-semibold">Ready</span>
+            </button>
+
+            <button class="module-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-50 flex items-center justify-between"
+                    data-module="payment">
+              <span><div class="font-semibold">Payment</div><div class="text-xs text-slate-500">Pembayaran</div></span>
+              <span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-600">Soon</span>
+            </button>
+
+            <button class="module-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-50 flex items-center justify-between"
+                    data-module="deposit">
+              <span><div class="font-semibold">Deposit</div><div class="text-xs text-slate-500">Setoran</div></span>
+              <span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-600">Soon</span>
+            </button>
+
+            <button class="module-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-50 flex items-center justify-between"
+                    data-module="sales_receipt">
+              <span><div class="font-semibold">Sales Receipt</div><div class="text-xs text-slate-500">Penerimaan penjualan</div></span>
+              <span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-600">Soon</span>
+            </button>
+
+            <button class="module-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-50 flex items-center justify-between"
+                    data-module="sales_order">
+              <span><div class="font-semibold">Sales Order</div><div class="text-xs text-slate-500">Pesanan penjualan</div></span>
+              <span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-600">Soon</span>
+            </button>
+
+            <button class="module-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-50 flex items-center justify-between"
+                    data-module="purchase_invoice">
+              <span><div class="font-semibold">Purchase Invoice</div><div class="text-xs text-slate-500">Faktur pembelian</div></span>
+              <span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-600">Soon</span>
+            </button>
+
+            <button class="module-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-50 flex items-center justify-between"
+                    data-module="purchase_payment">
+              <span><div class="font-semibold">Purchase Payment</div><div class="text-xs text-slate-500">Pembayaran pembelian</div></span>
+              <span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-600">Soon</span>
+            </button>
+          </nav>
+
+          <div class="p-5 border-t border-slate-200">
+            <div class="text-xs text-slate-500">Tips</div>
+            <div class="text-sm text-slate-600 mt-1">
+              Modul aktif saat ini: <span id="activeModuleName" class="font-semibold text-slate-900">Jurnal Voucher</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Content -->
+      <section class="lg:col-span-9 space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center justify-between">
+          <div>
+            <div class="text-xs text-slate-500">Module</div>
+            <h2 id="moduleTitle" class="text-xl font-bold">Jurnal Voucher</h2>
+            <p id="moduleDesc" class="text-sm text-slate-600 mt-1">
+              Upload Excel → Preview → Validasi → Import ke Accurate.
+            </p>
+          </div>
+
+          <div class="text-right">
+            <div class="text-xs text-slate-500">Status</div>
+            <div id="moduleStatusPill"
+                 class="inline-flex items-center rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold">
+              Ready
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE (shared UI for JV & SI) -->
+        <div id="moduleJournalVoucher" class="space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- LEFT -->
+            <div class="space-y-6">
+
+              <!-- Company Picker -->
+              <section class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                <h3 class="font-semibold text-lg mb-1">0) Pilih Data Usaha</h3>
+                <p class="text-sm text-slate-600">Pilih dulu database sebelum import.</p>
+
+                <div class="mt-4">
+                  <label class="block text-sm font-medium">Data Usaha</label>
+                  <select id="companySelect"
+                    class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                  </select>
+                  <p class="text-xs text-slate-500 mt-2">
+                    Kalau daftar kosong, pastikan sudah OAuth, atau tambah manual via link <span class="font-mono">open.do?id=...</span>.
+                  </p>
+                </div>
+
+                <div class="mt-4 flex gap-2">
+                  <button id="btnSetCompany"
+                    class="flex-1 rounded-xl bg-primary text-white px-4 py-2 text-sm font-semibold hover:bg-primaryDark">
+                    Pakai Data Usaha
+                  </button>
+                  <button id="btnRefreshCompanies"
+                    class="rounded-xl border border-slate-300 px-4 py-2 text-sm hover:bg-slate-50">
+                    Refresh
+                  </button>
+                </div>
+
+                <div class="mt-4">
+                  <label class="block text-sm font-medium">Tambah dari link (opsional)</label>
+                  <input id="companyUrl" type="text"
+                    placeholder="https://zeus.accurate.id/accurate/open.do?id=xxxx"
+                    class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:outline-none" />
+                  <button id="btnAddCompanyFromUrl"
+                    class="mt-2 w-full rounded-xl border border-slate-300 px-4 py-2 text-sm hover:bg-slate-50">
+                    Tambah ke daftar
+                  </button>
+                </div>
+
+                <div id="companyStatus" class="text-xs text-slate-600 mt-3"></div>
+              </section>
+
+              <!-- Upload -->
+              <section class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                <h3 class="font-semibold text-lg">1) Upload Excel</h3>
+
+                <div class="mt-4">
+                  <input id="file" type="file" accept=".xlsx,.xls" class="block w-full text-sm" />
+                  <p id="requiredColsHint" class="text-xs text-slate-500 mt-2">
+                    Kolom wajib: jurnal_key, transDate, accountNo, amountType, amount
+                  </p>
+                </div>
+
+                <div id="sessionIdWrap" class="mt-4">
+                  <label class="block text-sm font-medium">X-Session-ID (opsional)</label>
+                  <input id="sessionId" type="text" placeholder="Kosongkan jika pakai OAuth + pilih Data Usaha"
+                    class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:outline-none" />
+                  <p class="text-xs text-slate-500 mt-2">Kosongkan jika pakai OAuth + pilih Data Usaha.</p>
+                </div>
+
+                <div class="mt-6 flex gap-2">
+                  <button id="btnPreview"
+                    class="flex-1 rounded-xl bg-slate-800 text-white px-4 py-2 text-sm hover:bg-slate-900 disabled:opacity-60">
+                    Preview
+                  </button>
+                  <button id="btnValidate"
+                    class="flex-1 rounded-xl border border-slate-300 px-4 py-2 text-sm hover:bg-slate-50 disabled:opacity-60">
+                    Validasi
+                  </button>
+                </div>
+
+                <button id="btnImport"
+                  class="mt-3 w-full rounded-xl bg-primary text-white px-4 py-2 text-sm font-semibold hover:bg-primaryDark disabled:opacity-60">
+                  Import ke Accurate
+                </button>
+
+                <div class="mt-4">
+                  <div id="status" class="text-sm"></div>
+                  <div id="progressWrap" class="hidden mt-3">
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                      <div id="progressBar" class="bg-primary h-2 rounded-full" style="width:0%"></div>
+                    </div>
+                    <div id="progressText" class="text-xs text-slate-500 mt-2"></div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Template -->
+              <section class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                <h3 class="font-semibold text-lg">Template Excel</h3>
+                <p id="templateDesc" class="text-sm text-slate-700 mt-2">
+                  Gunakan template agar kolom sesuai.
+                </p>
+
+                <div class="mt-3 flex gap-2">
+                  <a id="templateDownload"
+                     href="/templates/journal-voucher.xlsx"
+                     class="flex-1 text-center rounded-xl bg-white border border-slate-300 px-4 py-2 text-sm font-semibold hover:bg-slate-50">
+                    Download Template
+                  </a>
+                </div>
+
+                <ul id="templateBullets" class="text-sm text-slate-700 mt-3 list-disc ml-5 space-y-1">
+                  <li><b>jurnal_key</b> = pengelompokan 1 jurnal</li>
+                  <li><b>transDate</b> = dd/mm/yyyy</li>
+                  <li><b>amountType</b> = DEBIT / CREDIT</li>
+                  <li><b>amount</b> = angka &gt; 0</li>
+                </ul>
+
+                <p id="templateOptional" class="text-xs text-slate-500 mt-3">
+                  Optional: description, number, memo, subsidiaryType, customerNo/vendorNo/employeeNo, rate, primeAmount
+                </p>
+              </section>
+
+            </div>
+
+            <!-- RIGHT -->
+            <div class="lg:col-span-2 space-y-6">
+
+              <!-- Preview -->
+              <section class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                <div class="flex items-center justify-between">
+                  <h3 class="font-semibold text-lg">2) Preview Data</h3>
+                  <span id="previewMeta" class="text-xs text-slate-500"></span>
+                </div>
+
+                <div class="mt-4 overflow-auto border border-slate-200 rounded-xl">
+                  <table class="min-w-full text-sm">
+                    <thead class="bg-slate-50 text-slate-600">
+                      <tr id="previewHead"></tr>
+                    </thead>
+                    <tbody id="previewBody" class="divide-y divide-slate-200"></tbody>
+                  </table>
+                </div>
+              </section>
+
+              <!-- Validation -->
+              <section class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                <div class="flex items-center justify-between">
+                  <h3 class="font-semibold text-lg">3) Hasil Validasi</h3>
+                  <span id="validateMeta" class="text-xs text-slate-500"></span>
+                </div>
+
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-4 gap-3">
+                  <div class="rounded-xl border border-slate-200 p-3">
+                    <div class="text-xs text-slate-500">Total Baris</div>
+                    <div id="sumRows" class="text-lg font-semibold">-</div>
+                  </div>
+                  <div class="rounded-xl border border-slate-200 p-3">
+                    <div id="sumDetectedLabel" class="text-xs text-slate-500">Terdeteksi</div>
+                    <div id="sumDetected" class="text-lg font-semibold">-</div>
+                  </div>
+                  <div class="rounded-xl border border-slate-200 p-3">
+                    <div id="sumValidLabel" class="text-xs text-slate-500">Valid</div>
+                    <div id="sumValid" class="text-lg font-semibold">-</div>
+                  </div>
+                  <div class="rounded-xl border border-slate-200 p-3">
+                    <div class="text-xs text-slate-500">Error</div>
+                    <div id="sumErrors" class="text-lg font-semibold">-</div>
+                  </div>
+                </div>
+
+                <div class="mt-4">
+                  <h4 class="font-medium">Error (jika ada)</h4>
+                  <div class="mt-2 overflow-auto border border-slate-200 rounded-xl">
+                    <table class="min-w-full text-sm">
+                      <thead class="bg-slate-50 text-slate-600">
+                        <tr>
+                          <th class="text-left p-2">Tipe</th>
+                          <th id="errorKeyHead" class="text-left p-2">Key</th>
+                          <th class="text-left p-2">Row</th>
+                          <th class="text-left p-2">Pesan</th>
+                        </tr>
+                      </thead>
+                      <tbody id="errorBody" class="divide-y divide-slate-200"></tbody>
+                    </table>
+                  </div>
+                  <p class="text-xs text-slate-500 mt-2">Kalau masih ada error, import akan ditolak agar aman.</p>
+                </div>
+
+                <div class="mt-6">
+                  <h4 id="sampleTitle" class="font-medium">Contoh data yang akan dikirim (maks 20)</h4>
+                  <div class="mt-2 overflow-auto border border-slate-200 rounded-xl">
+                    <table class="min-w-full text-sm">
+                      <thead class="bg-slate-50 text-slate-600">
+                        <tr id="sampleHead"></tr>
+                      </thead>
+                      <tbody id="sampleBody" class="divide-y divide-slate-200"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Log -->
+              <section class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                <div class="flex items-center justify-between">
+                  <h3 class="font-semibold text-lg">4) Log Import</h3>
+                  <span id="jobMeta" class="text-xs text-slate-500"></span>
+                </div>
+
+                <div class="mt-4 flex flex-wrap gap-2 items-center justify-between">
+                  <div class="flex gap-2">
+                    <button id="btnViewSimple"
+                      class="rounded-xl bg-slate-900 text-white px-3 py-2 text-xs font-semibold hover:bg-slate-800">
+                      Tampilan Ringkas
+                    </button>
+                    <button id="btnViewRaw"
+                      class="rounded-xl bg-white border border-slate-200 px-3 py-2 text-xs font-semibold hover:bg-slate-50">
+                      Tampilan JSON (raw)
+                    </button>
+                  </div>
+
+                  <div class="flex gap-2 items-center">
+                    <input id="logFilter" type="text" placeholder="Filter key / pesan..."
+                      class="w-56 rounded-xl border border-slate-200 px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary" />
+                    <button id="btnCopyLog"
+                      class="rounded-xl bg-white border border-slate-200 px-3 py-2 text-xs font-semibold hover:bg-slate-50">
+                      Copy
+                    </button>
+                  </div>
+                </div>
+
+                <div id="simpleLogWrap" class="mt-4 overflow-auto border border-slate-200 rounded-xl">
+                  <table class="min-w-full text-sm">
+                    <thead class="bg-slate-50 text-slate-600">
+                      <tr>
+                        <th class="text-left p-2">Status</th>
+                        <th id="logKeyHead" class="text-left p-2">Key</th>
+                        <th class="text-left p-2">Nomor</th>
+                        <th class="text-left p-2">Pesan</th>
+                      </tr>
+                    </thead>
+                    <tbody id="simpleLogBody" class="divide-y divide-slate-200"></tbody>
+                  </table>
+                </div>
+
+                <div id="rawLogWrap" class="hidden mt-4 overflow-auto border border-slate-200 rounded-xl">
+                  <pre id="jobLog" class="text-xs p-3 whitespace-pre-wrap"></pre>
+                </div>
+
+                <p class="text-xs text-slate-500 mt-2">
+                  Tips: kalau gagal, cek master (customerNo/vendorNo/employeeNo/itemNo), format tanggal, dan field wajib.
+                </p>
+              </section>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Placeholder -->
+        <div id="modulePlaceholder" class="hidden">
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+            <div class="inline-flex items-center rounded-full bg-slate-100 text-slate-700 px-3 py-1 text-xs font-semibold">
+              Coming soon
+            </div>
+            <h3 class="text-xl font-bold mt-3">Modul belum aktif</h3>
+            <p class="text-sm text-slate-600 mt-1">
+              Endpoint & formnya akan kita sambungkan setelah ini.
+            </p>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+</div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  function show(el, yes=true) {
+    if (!el) return;
+    el.classList.toggle("hidden", !yes);
+  }
+
+  function escapeHtml(s) {
+    return (s ?? "").toString()
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function setGateError(msg) {
+    const el = $("gateError");
+    if (!el) return;
+    if (!msg) { show(el, false); el.textContent = ""; return; }
+    el.textContent = msg;
+    show(el, true);
+  }
+
+  function setStatus(msg, kind="info") {
+    const el = $("status");
+    if (!el) return;
+    el.className = "text-sm " + (kind === "error" ? "text-rose-700" : kind === "ok" ? "text-emerald-700" : "text-slate-700");
+    el.textContent = msg;
+  }
+
+  function setProgress(showIt, percent=0, text="") {
+    const wrap = $("progressWrap");
+    if (!wrap) return;
+    if (!showIt) { wrap.classList.add("hidden"); return; }
+    wrap.classList.remove("hidden");
+    $("progressBar").style.width = `${percent}%`;
+    $("progressText").textContent = text;
+  }
+
+  function getFile() {
+    const f = $("file")?.files?.[0];
+    if (!f) throw new Error("Pilih file Excel dulu.");
+    return f;
+  }
+
+  async function postFile(url, file, extraForm={}) {
+    const fd = new FormData();
+    fd.append("file", file);
+    for (const [k,v] of Object.entries(extraForm)) fd.append(k, v);
+    const res = await fetch(url, { method: "POST", body: fd });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(json.error || "Request gagal");
+    return json;
+  }
+
+  function getTenantFromHost() {
+    const h = (location.hostname || "").toLowerCase();
+    const parts = h.split(".");
+    if (parts.length >= 3) return parts[0];
+    return h || "localhost";
+  }
+
+  async function checkAccess() {
+    const year = new Date().getFullYear();
+    if ($("yearNow")) $("yearNow").textContent = year;
+    if ($("yearNow2")) $("yearNow2").textContent = year;
+
+    const tenant = getTenantFromHost();
+    if ($("landingTenantPill")) $("landingTenantPill").textContent = `Tenant: ${tenant || "-"}`;
+    if ($("gateTenant")) $("gateTenant").textContent = tenant || "-";
+    if ($("tenantBadge")) $("tenantBadge").textContent = `Tenant: ${tenant || "-"}`;
+
+    try {
+      const r = await fetch("/auth/status");
+      const s = await r.json();
+
+      if (!s.configured) {
+        if ($("landingAccessStatus")) $("landingAccessStatus").textContent = "Tenant belum terdaftar";
+        show($("landingPage"), true);
+        show($("gatePage"), false);
+        show($("appShell"), false);
+        return;
       }
-      const text = await res.text();
-      return { ok:false, error:`Response bukan JSON (${res.status}).\n${text.slice(0,300)}` };
+
+      if (s.access_ok) {
+        show($("landingPage"), false);
+        show($("gatePage"), false);
+        show($("appShell"), true);
+        initDashboard();
+        refreshOauthBadge();
+        loadCompanies();
+        return;
+      }
+
+      if ($("landingAccessStatus")) $("landingAccessStatus").textContent = "Silakan masuk dengan kode akses";
+      show($("landingPage"), true);
+      show($("gatePage"), false);
+      show($("appShell"), false);
+    } catch {
+      if ($("landingAccessStatus")) $("landingAccessStatus").textContent = "Gagal cek status akses (backend error)";
+      show($("landingPage"), true);
+      show($("gatePage"), false);
+      show($("appShell"), false);
     }
+  }
 
-    async function refreshAuthStatus({redirectIfOk=false} = {}){
-      try{
-        const res = await fetch("/auth/status", { credentials: "include" });
-        const data = await safeReadJson(res);
+  function goLogin() {
+    setGateError("");
+    show($("landingPage"), false);
+    show($("gatePage"), true);
+    show($("appShell"), false);
+    $("accessCode")?.focus();
+  }
 
-        const ok = !!data.access_ok;
-        $("authStatus").textContent = ok ? "Akses Aktif" : "Belum Login";
+  function backToLanding() {
+    setGateError("");
+    show($("landingPage"), true);
+    show($("gatePage"), false);
+    show($("appShell"), false);
+  }
 
-        if(redirectIfOk && ok){
-          window.location.href = "/app";
-        }
-        return data;
-      }catch(e){
-        $("authStatus").textContent = "Unknown";
-        return null;
+  $("btnGoLoginTop")?.addEventListener("click", goLogin);
+  $("btnGoLoginHero")?.addEventListener("click", goLogin);
+  $("btnGoLoginCard")?.addEventListener("click", goLogin);
+  $("btnGoLoginBottom")?.addEventListener("click", goLogin);
+  $("btnOpenLoginInfo")?.addEventListener("click", goLogin);
+  $("btnBackToLanding")?.addEventListener("click", backToLanding);
+
+  $("gateForm")?.addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    setGateError("");
+    const btn = $("btnGateLogin");
+    if (btn) { btn.disabled = true; btn.textContent = "Memproses..."; }
+
+    try {
+      const code = ($("accessCode")?.value || "").trim();
+      if (!code) throw new Error("Kode akses kosong.");
+      const res = await fetch("/auth/verify", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({ code })
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json.error || "Kode akses salah.");
+      location.reload();
+    } catch (e) {
+      setGateError(e.message || "Kode akses salah.");
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = "Masuk"; }
+    }
+  });
+
+  $("btnLogout")?.addEventListener("click", async () => {
+    try {
+      await fetch("/auth/logout", { method: "POST", headers: {"Content-Type":"application/json"}, body: "{}" });
+      location.reload();
+    } catch {
+      alert("Gagal logout");
+    }
+  });
+
+  // ===== Module switcher =====
+  const MODULES = {
+    journal_voucher: { name: "Jurnal Voucher", desc: "Upload Excel → Preview → Validasi → Import ke Accurate.", ready: true },
+    sales_invoice: { name: "Sales Invoice", desc: "Upload Excel → Preview → Validasi → Import Sales Invoice ke Accurate.", ready: true },
+    payment: { name: "Payment", desc: "Import pembayaran.", ready: false },
+    deposit: { name: "Deposit", desc: "Import setoran.", ready: false },
+    sales_receipt: { name: "Sales Receipt", desc: "Import penerimaan penjualan.", ready: false },
+    sales_order: { name: "Sales Order", desc: "Import pesanan penjualan.", ready: false },
+    purchase_invoice: { name: "Purchase Invoice", desc: "Import faktur pembelian.", ready: false },
+    purchase_payment: { name: "Purchase Payment", desc: "Import pembayaran pembelian.", ready: false },
+  };
+
+  let activeModule = "journal_voucher";
+
+  const API = {
+    journal_voucher: {
+      preview: "/api/preview",
+      validate: "/api/validate",
+      import: "/api/import",
+      keyLabel: "jurnal_key",
+      sampleKey: "journals_sample",
+      showSessionId: true,
+      requiredHint: "Kolom wajib: jurnal_key, transDate, accountNo, amountType, amount",
+      templateUrl: "/templates/journal-voucher.xlsx",
+      templateDesc: "Template untuk import Journal Voucher.",
+      templateBullets: [
+        "<b>jurnal_key</b> = pengelompokan 1 jurnal",
+        "<b>transDate</b> = dd/mm/yyyy",
+        "<b>amountType</b> = DEBIT / CREDIT",
+        "<b>amount</b> = angka > 0",
+      ],
+      templateOptional: "Optional: description, number, memo, subsidiaryType, customerNo/vendorNo/employeeNo, rate, primeAmount",
+      detectedLabel: "Jurnal Terdeteksi",
+      validLabel: "Jurnal Valid",
+      sampleTitle: "Contoh jurnal yang akan dikirim (maks 20)",
+    },
+    sales_invoice: {
+      preview: "/api/sales-invoice/preview",
+      validate: "/api/sales-invoice/validate",
+      import: "/api/sales-invoice/import",
+      keyLabel: "invoice_key",
+      sampleKey: "invoices_sample",
+      showSessionId: false,
+      requiredHint: "Kolom wajib: invoice_key, transDate, customerNo, itemNo, unitPrice (quantity optional)",
+      templateUrl: "/templates/sales-invoice.xlsx",
+      templateDesc: "Template untuk import Sales Invoice.",
+      templateBullets: [
+        "<b>invoice_key</b> = pengelompokan 1 invoice",
+        "<b>transDate</b> = dd/mm/yyyy (WAJIB)",
+        "<b>customerNo</b> = kode customer",
+        "<b>itemNo</b> + <b>unitPrice</b> wajib per baris item",
+      ],
+      templateOptional: "Optional: quantity (default 1), number, description, currencyCode, inclusiveTax, taxable, warehouseName, dll.",
+      detectedLabel: "Invoice Terdeteksi",
+      validLabel: "Invoice Valid",
+      sampleTitle: "Contoh invoice yang akan dikirim (maks 20)",
+    }
+  };
+
+  const SAMPLE_HEADERS = {
+    journal_voucher: [
+      ["jurnal_key", "jurnal_key"],
+      ["transDate", "Tanggal"],
+      ["number", "Nomor"],
+      ["description", "Deskripsi"],
+      ["lines", "Lines"],
+      ["debit", "Debit"],
+      ["credit", "Credit"],
+    ],
+    sales_invoice: [
+      ["invoice_key", "invoice_key"],
+      ["transDate", "Tanggal"],
+      ["number", "Nomor"],
+      ["customerNo", "Customer"],
+      ["lines", "Lines"],
+      ["currencyCode", "Currency"],
+      ["_", "-"],
+    ],
+  };
+
+  function renderSampleHeader() {
+    const head = $("sampleHead");
+    if (!head) return;
+    head.innerHTML = "";
+    const cols = SAMPLE_HEADERS[activeModule] || SAMPLE_HEADERS.journal_voucher;
+    for (const [, label] of cols) {
+      const th = document.createElement("th");
+      th.className = "text-left p-2";
+      th.textContent = label;
+      head.appendChild(th);
+    }
+  }
+
+  function applyModuleUI() {
+    const m = MODULES[activeModule] || MODULES.journal_voucher;
+    const cfg = API[activeModule] || API.journal_voucher;
+
+    $("activeModuleName").textContent = m.name;
+    $("moduleTitle").textContent = m.name;
+    $("moduleDesc").textContent = m.desc;
+
+    const pill = $("moduleStatusPill");
+    if (pill) {
+      if (m.ready) {
+        pill.className = "inline-flex items-center rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold";
+        pill.textContent = "Ready";
+      } else {
+        pill.className = "inline-flex items-center rounded-full bg-slate-100 text-slate-700 px-3 py-1 text-xs font-semibold";
+        pill.textContent = "Coming soon";
       }
     }
 
-    $("btnLoginAccurate").addEventListener("click", () => {
-      window.location.href = "/oauth/login";
+    // shared UI for JV & SI
+    show($("moduleJournalVoucher"), (activeModule === "journal_voucher" || activeModule === "sales_invoice"));
+    show($("modulePlaceholder"), !(activeModule === "journal_voucher" || activeModule === "sales_invoice"));
+
+    // session id toggle
+    show($("sessionIdWrap"), !!cfg.showSessionId);
+
+    // hint & labels
+    if ($("requiredColsHint")) $("requiredColsHint").innerHTML = cfg.requiredHint;
+    if ($("sumDetectedLabel")) $("sumDetectedLabel").textContent = cfg.detectedLabel;
+    if ($("sumValidLabel")) $("sumValidLabel").textContent = cfg.validLabel;
+    if ($("sampleTitle")) $("sampleTitle").textContent = cfg.sampleTitle;
+    if ($("errorKeyHead")) $("errorKeyHead").textContent = cfg.keyLabel;
+    if ($("logKeyHead")) $("logKeyHead").textContent = cfg.keyLabel;
+
+    // template
+    if ($("templateDesc")) $("templateDesc").textContent = cfg.templateDesc;
+    if ($("templateDownload")) $("templateDownload").setAttribute("href", cfg.templateUrl);
+    if ($("templateBullets")) {
+      $("templateBullets").innerHTML = (cfg.templateBullets || []).map(x => `<li>${x}</li>`).join("");
+    }
+    if ($("templateOptional")) $("templateOptional").textContent = cfg.templateOptional;
+
+    // sample header
+    renderSampleHeader();
+
+    // active button highlight
+    document.querySelectorAll(".module-btn").forEach(btn => {
+      const isActive = btn.dataset.module === activeModule;
+      btn.classList.toggle("bg-primary/10", isActive);
+      btn.classList.toggle("border", isActive);
+      btn.classList.toggle("border-primary/20", isActive);
     });
 
-    $("btnVerify").addEventListener("click", async () => {
-      const btn = $("btnVerify");
-      btn.disabled = true;
+    // clear outputs when switch module
+    $("previewHead").innerHTML = "";
+    $("previewBody").innerHTML = "";
+    $("previewMeta").textContent = "";
+    $("errorBody").innerHTML = "";
+    $("sampleBody").innerHTML = "";
+    $("validateMeta").textContent = "";
+    $("sumRows").textContent = "-";
+    $("sumDetected").textContent = "-";
+    $("sumValid").textContent = "-";
+    $("sumErrors").textContent = "-";
+    $("jobMeta").textContent = "";
+    lastJob = null;
+    $("simpleLogBody").innerHTML = "";
+    $("jobLog").textContent = "";
+    setStatus("", "info");
+    setProgress(false);
+  }
 
-      try{
-        setMsg("Memeriksa kode…");
-        const code = ($("accessCode").value || "").trim();
-        if(!code){
-          setMsg("Kode akses masih kosong.", "err");
-          return;
+  function activateModule(key) {
+    activeModule = key;
+    const m = MODULES[key] || MODULES.journal_voucher;
+
+    // show placeholder if not ready
+    if (!m.ready && !(key === "journal_voucher" || key === "sales_invoice")) {
+      applyModuleUI();
+      return;
+    }
+    applyModuleUI();
+  }
+
+  function initDashboard() {
+    document.querySelectorAll(".module-btn").forEach(btn => {
+      btn.addEventListener("click", () => activateModule(btn.dataset.module));
+    });
+    activateModule("journal_voucher");
+  }
+
+  // ===== OAuth badge =====
+  async function refreshOauthBadge() {
+    const b = $("oauthBadge");
+    if (!b) return;
+    try {
+      const r = await fetch("/oauth/status");
+      const s = await r.json();
+      if (s.logged_in) {
+        b.textContent = "OAuth: logged-in";
+        b.className = "text-xs px-3 py-1 rounded-full bg-emerald-50 text-emerald-700";
+      } else {
+        b.textContent = "OAuth: not logged-in";
+        b.className = "text-xs px-3 py-1 rounded-full bg-slate-100 text-slate-600";
+      }
+    } catch {
+      b.textContent = "OAuth: unknown";
+      b.className = "text-xs px-3 py-1 rounded-full bg-slate-100 text-slate-600";
+    }
+  }
+
+  // ===== Company picker =====
+  async function loadCompanies() {
+    const st = $("companyStatus");
+    const sel = $("companySelect");
+    if (!sel) return;
+    if (st) st.textContent = "Memuat daftar data usaha...";
+
+    try {
+      const r = await fetch("/accurate/companies");
+      const data = await r.json();
+
+      sel.innerHTML = "";
+      (data.items || []).forEach(it => {
+        const opt = document.createElement("option");
+        opt.value = it.id;
+        opt.textContent = `${it.name} (id: ${it.id})`;
+        sel.appendChild(opt);
+      });
+
+      if (data.selected_company_id) {
+        sel.value = data.selected_company_id;
+        if (st) st.textContent = `Terpilih saat ini: ${data.selected_company_id}`;
+      } else {
+        if (st) st.textContent = (data.items && data.items.length)
+          ? "Silakan pilih Data Usaha lalu klik 'Pakai Data Usaha'."
+          : "Belum ada Data Usaha tersimpan.";
+      }
+
+      if (data.warning && st) st.textContent += ` (Warning: ${data.warning})`;
+    } catch {
+      if (st) st.textContent = "❌ Gagal memuat daftar data usaha.";
+    }
+  }
+
+  async function setCompany() {
+    const sel = $("companySelect");
+    const st = $("companyStatus");
+    if (!sel) return;
+    const id = sel.value;
+    const r = await fetch("/accurate/select-company", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({id})
+    });
+    const data = await r.json().catch(() => ({}));
+    if (st) st.textContent = data.ok ? `✅ Dipilih: ${data.selected}` : `❌ Gagal: ${data.error || "unknown"}`;
+  }
+
+  async function addCompanyFromUrl() {
+    const url = ($("companyUrl")?.value || "").trim();
+    const st = $("companyStatus");
+    const r = await fetch("/accurate/add-company-from-url", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({url})
+    });
+    const data = await r.json().catch(() => ({}));
+    if (st) st.textContent = data.ok ? `✅ Ditambah: ${data.item.name} (id: ${data.item.id})` : `❌ ${data.error || "unknown"}`;
+    await loadCompanies();
+  }
+
+  $("btnRefreshCompanies")?.addEventListener("click", loadCompanies);
+  $("btnSetCompany")?.addEventListener("click", setCompany);
+  $("btnAddCompanyFromUrl")?.
+  addEventListener("click", addCompanyFromUrl);
+
+  // ===== Handlers (shared JV & SI) =====
+  let lastJob = null;
+  let logView = "simple"; // simple | raw
+
+  function renderPreview(columns, rows) {
+    const head = $("previewHead");
+    const body = $("previewBody");
+    if (!head || !body) return;
+    head.innerHTML = "";
+    body.innerHTML = "";
+
+    const cols = (columns || []).slice(0, 10);
+    for (const c of cols) {
+      const th = document.createElement("th");
+      th.className = "text-left p-2";
+      th.textContent = c;
+      head.appendChild(th);
+    }
+
+    for (const r of (rows || [])) {
+      const tr = document.createElement("tr");
+      for (const c of cols) {
+        const td = document.createElement("td");
+        td.className = "p-2";
+        td.textContent = (r?.[c] ?? "").toString();
+        tr.appendChild(td);
+      }
+      body.appendChild(tr);
+    }
+
+    if ($("previewMeta")) $("previewMeta").textContent = `Menampilkan ${(rows || []).length} baris (kolom dibatasi 10)`;
+  }
+
+  function renderValidation(result) {
+    const s = result.summary || {};
+    const cfg = API[activeModule] || API.journal_voucher;
+
+    // summary numbers (support JV & SI)
+    $("sumRows").textContent = s.total_rows ?? "-";
+    $("sumDetected").textContent = (s.total_journals_detected ?? s.total_invoices_detected ?? "-");
+    $("sumValid").textContent = (s.valid_journals ?? s.valid_invoices ?? "-");
+    $("sumErrors").textContent = s.errors ?? "-";
+
+    $("validateMeta").textContent = (s.errors ? "Masih ada error. Perbaiki dulu sebelum import." : "Valid. Siap import.");
+
+    // errors table
+    const ebody = $("errorBody");
+    if (ebody) {
+      ebody.innerHTML = "";
+      for (const e of (result.errors || [])) {
+        const keyVal = e.jurnal_key ?? e.invoice_key ?? "";
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td class="p-2">${escapeHtml(e.type)}</td>
+          <td class="p-2">${escapeHtml(keyVal)}</td>
+          <td class="p-2">${escapeHtml(e.row ?? "")}</td>
+          <td class="p-2">${escapeHtml(e.message)}</td>
+        `;
+        ebody.appendChild(tr);
+      }
+    }
+
+    // sample table
+    renderSampleHeader();
+    const sbody = $("sampleBody");
+    if (sbody) {
+      sbody.innerHTML = "";
+      const rows = result[cfg.sampleKey] || [];
+      const cols = SAMPLE_HEADERS[activeModule] || SAMPLE_HEADERS.journal_voucher;
+
+      for (const r of rows) {
+        const tr = document.createElement("tr");
+        for (const [k] of cols) {
+          const td = document.createElement("td");
+          td.className = "p-2";
+          td.textContent = (k === "_") ? "-" : ((r?.[k] ?? "").toString());
+          tr.appendChild(td);
         }
+        sbody.appendChild(tr);
+      }
+    }
+  }
 
-        const res = await fetch("/auth/verify", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ code })
+  function getMsgFromItem(it) {
+    if (it?.msg) return it.msg;
+    if (it?.message) return Array.isArray(it.message) ? it.message.join("; ") : (it.message ?? "");
+    if (it?.error) return Array.isArray(it.error) ? it.error.join("; ") : (it.error ?? "");
+    return "";
+  }
+
+  function flattenResults(job) {
+    const out = [];
+    const logs = job?.logs || [];
+    for (const b of logs) {
+      const results = b?.results || [];
+      for (const it of results) {
+        out.push({
+          ok: !!it.ok,
+          key: it.jurnal_key ?? it.invoice_key ?? "",
+          number: it.number ?? "",
+          msg: getMsgFromItem(it) || it.message || it.error || "",
         });
+      }
+    }
+    return out;
+  }
 
-        const data = await safeReadJson(res);
+  function renderSimpleLog(job) {
+    const tbody = $("simpleLogBody");
+    if (!tbody) return;
+    tbody.innerHTML = "";
 
-        if (data.ok) {
-          setMsg("Berhasil! Akses sudah aktif.", "ok");
-          await refreshAuthStatus();
-          setTimeout(() => {
-          window.location.href = "/app";
-        }, 600);
-        }
+    const filter = ($("logFilter")?.value || "").toLowerCase().trim();
+    const rows = flattenResults(job).filter(x => {
+      if (!filter) return true;
+      return ((x.key || "").toLowerCase().includes(filter) ||
+              (x.number || "").toLowerCase().includes(filter) ||
+              (x.msg || "").toLowerCase().includes(filter));
     });
 
-    $("year").textContent = new Date().getFullYear();
+    if (!rows.length) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td class="p-3 text-slate-500 text-sm" colspan="4">Belum ada data log.</td>`;
+      tbody.appendChild(tr);
+      return;
+    }
 
-    // AUTO redirect kalau session sudah akses_ok
-    refreshAuthStatus({redirectIfOk:true});
-  </script>
+    for (const r of rows) {
+      const badge = r.ok
+        ? `<span class="inline-flex items-center rounded-full bg-emerald-50 text-emerald-700 px-2 py-1 text-xs font-semibold">OK</span>`
+        : `<span class="inline-flex items-center rounded-full bg-rose-50 text-rose-700 px-2 py-1 text-xs font-semibold">FAIL</span>`;
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td class="p-2">${badge}</td>
+        <td class="p-2 font-medium">${escapeHtml(r.key)}</td>
+        <td class="p-2">${escapeHtml(r.number)}</td>
+        <td class="p-2">${escapeHtml(r.msg)}</td>
+      `;
+      tbody.appendChild(tr);
+    }
+  }
+
+  function renderRaw(job) {
+    const el = $("jobLog");
+    if (!el) return;
+    el.textContent = JSON.stringify(job, null, 2);
+  }
+
+  function setLogView(view) {
+    logView = view;
+    if (view === "simple") {
+      show($("simpleLogWrap"), true);
+      show($("rawLogWrap"), false);
+      $("btnViewSimple") && ($("btnViewSimple").className = "rounded-xl bg-slate-900 text-white px-3 py-2 text-xs font-semibold hover:bg-slate-800");
+      $("btnViewRaw") && ($("btnViewRaw").className = "rounded-xl bg-white border border-slate-200 px-3 py-2 text-xs font-semibold hover:bg-slate-50");
+      if (lastJob) renderSimpleLog(lastJob);
+    } else {
+      show($("simpleLogWrap"), false);
+      show($("rawLogWrap"), true);
+      $("btnViewSimple") && ($("btnViewSimple").className = "rounded-xl bg-white border border-slate-200 px-3 py-2 text-xs font-semibold hover:bg-slate-50");
+      $("btnViewRaw") && ($("btnViewRaw").className = "rounded-xl bg-slate-900 text-white px-3 py-2 text-xs font-semibold hover:bg-slate-800");
+      if (lastJob) renderRaw(lastJob);
+    }
+  }
+
+  $("btnViewSimple")?.addEventListener("click", () => setLogView("simple"));
+  $("btnViewRaw")?.addEventListener("click", () => setLogView("raw"));
+
+  $("logFilter")?.addEventListener("input", () => {
+    if (lastJob && logView === "simple") renderSimpleLog(lastJob);
+  });
+
+  $("btnCopyLog")?.addEventListener("click", async () => {
+    const text = (logView === "raw")
+      ? ($("jobLog")?.textContent || "")
+      : ($("simpleLogWrap")?.innerText || "");
+    try {
+      await navigator.clipboard.writeText(text);
+      setStatus("Log tersalin ke clipboard.", "ok");
+    } catch {
+      setStatus("Gagal copy (browser menolak).", "error");
+    }
+  });
+
+  $("btnPreview")?.addEventListener("click", async () => {
+    try {
+      setStatus("Memproses preview...");
+      setProgress(true, 20, "Upload & baca Excel...");
+      const file = getFile();
+      const cfg = API[activeModule] || API.journal_voucher;
+      const r = await postFile(cfg.preview, file);
+      renderPreview(r.columns, r.preview);
+      setProgress(false);
+      setStatus("Preview siap.", "ok");
+    } catch (e) {
+      setProgress(false);
+      setStatus(e.message, "error");
+    }
+  });
+
+  $("btnValidate")?.addEventListener("click", async () => {
+    try {
+      setStatus("Memproses validasi...");
+      setProgress(true, 30, "Validasi data...");
+      const file = getFile();
+      const cfg = API[activeModule] || API.journal_voucher;
+      const r = await postFile(cfg.validate, file);
+      renderValidation(r);
+      setProgress(false);
+      const hasErr = !!(r.summary?.errors);
+      setStatus(hasErr ? "Validasi selesai: masih ada error." : "Validasi OK. Siap import!", hasErr ? "error" : "ok");
+    } catch (e) {
+      setProgress(false);
+      setStatus(e.message, "error");
+    }
+  });
+
+  $("btnImport")?.addEventListener("click", async () => {
+    try {
+      setStatus("Mulai import...");
+      setProgress(true, 10, "Menyiapkan data...");
+      const file = getFile();
+      const cfg = API[activeModule] || API.journal_voucher;
+
+      const extra = {};
+      if (cfg.showSessionId) {
+        extra.session_id = ($("sessionId")?.value || "").trim();
+      }
+
+      const r = await postFile(cfg.import, file, extra);
+
+      setProgress(true, 60, "Import dijalankan. Mengambil log job...");
+      if ($("jobMeta")) $("jobMeta").textContent = `Job ID: ${r.job_id}`;
+      await pollJob(r.job_id);
+    } catch (e) {
+      setProgress(false);
+      setStatus(e.message, "error");
+    }
+  });
+
+  async function pollJob(jobId) {
+    setProgress(true, 70, "Mengambil status job...");
+    for (let i = 0; i < 30; i++) {
+      const res = await fetch(`/api/job/${jobId}`);
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || !json.ok) throw new Error(json.error || "Gagal membaca job");
+
+      lastJob = json.job;
+
+      if (logView === "raw") renderRaw(lastJob);
+      else renderSimpleLog(lastJob);
+
+      if (json.job.status === "done") {
+        setProgress(false);
+        setStatus("Import selesai. Cek log di bawah.", "ok");
+        return;
+      }
+      await new Promise(r => setTimeout(r, 1000));
+    }
+    setProgress(false);
+    setStatus("Job masih berjalan. Refresh halaman untuk cek log lagi.", "info");
+  }
+
+  // start
+  setLogView("simple");
+  checkAccess();
+</script>
+
 </body>
 </html>
