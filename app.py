@@ -173,24 +173,11 @@ app.add_middleware(
 # MIDDLEWARE: FORCE WWW + ACCESS GATE
 # =========================
 @app.middleware("http")
-async def main_middleware(request: Request, call_next):
-    # 1) Force root -> www
-    host = get_host(request)
-    if host == TENANT_BASE_DOMAIN:
-        url = request.url.replace(netloc=f"www.{TENANT_BASE_DOMAIN}")
-        return RedirectResponse(str(url), status_code=301)
-
-    # 2) Access gate
-    path = request.url.path
-    if (not is_public_path(path)) and is_protected_path(path):
-        if not request.session.get("access_ok"):
-            return JSONResponse({"ok": False, "error": "Unauthorized. Masukkan kode akses dulu."}, status_code=401)
-
-        tenant = get_tenant_slug_from_request(request)
-        sess_tenant = (request.session.get("tenant") or "default").lower()
-        if tenant != sess_tenant:
-            return JSONResponse({"ok": False, "error": "Tenant session tidak cocok. Silakan login ulang."}, status_code=401)
-
+async def force_www_redirect(request: Request, call_next):
+    host = request.headers.get("host", "")
+    if host == "aca-aol.id":
+        url = request.url.replace(netloc="www.aca-aol.id")
+        return RedirectResponse(str(url), status_code=308)  # <-- ganti 301 ke 308
     return await call_next(request)
 
 
@@ -264,40 +251,23 @@ def auth_logout(request: Request):
 # =========================
 # UI ROUTES
 # =========================
+from fastapi.responses import RedirectResponse, HTMLResponse
+from fastapi import Request
+
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
+    # kalau sudah access_ok, langsung masuk app
+    if request.session.get("access_ok"):
+        return RedirectResponse("/app", status_code=302)
     return templates.TemplateResponse("index.html", {"request": request})
 
 
 @app.get("/app", response_class=HTMLResponse)
-def app_page(request: Request):
-    """
-    Ini placeholder halaman aplikasi setelah akses OK.
-    Kamu bisa ganti template sendiri (misal: app.html).
-    """
-    if not request.session.get("access_ok"):
-        return RedirectResponse("/", status_code=302)
-    return HTMLResponse(
-        f"""
-        <html><head><meta charset="utf-8"><title>ACA-AOL App</title></head>
-        <body style="font-family:Arial;padding:24px">
-            <h2>✅ Akses aktif</h2>
-            <p>Tenant: <b>{request.session.get("tenant")}</b></p>
-            <p>Silakan lanjut OAuth Accurate / upload Excel dari UI kamu.</p>
-            <p><a href="/">Kembali ke Landing</a></p>
-        </body></html>
-        """
-    )
-
-@app.get("/app", response_class=HTMLResponse)
 def app_home(request: Request):
+    # kalau belum akses, lempar balik ke landing
     if not request.session.get("access_ok"):
         return RedirectResponse("/", status_code=302)
-
-    return templates.TemplateResponse("app.html", {
-        "request": request,
-        "tenant": request.session.get("tenant", "default")
-    })
+    return templates.TemplateResponse("app.html", {"request": request})
 
 
 # =========================
