@@ -5,24 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ACA-AOL — Import Excel to Accurate Online</title>
 
-  <!-- Elegant modern font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#fff7ed;           /* orange-50 */
+      --bg:#fff7ed;
       --card:#ffffff;
-      --text:#111827;         /* slate-900 */
-      --muted:#4b5563;        /* gray-600 */
-      --muted2:#6b7280;       /* gray-500 */
+      --text:#111827;
+      --muted:#4b5563;
+      --muted2:#6b7280;
       --stroke:rgba(17,24,39,.10);
       --shadow: 0 18px 60px rgba(17,24,39,.10);
 
-      --brand:#f97316;        /* orange-500 */
-      --brand2:#fb923c;       /* orange-400 */
-      --brand3:#ea580c;       /* orange-600 */
+      --brand:#f97316;
+      --brand2:#fb923c;
+      --brand3:#ea580c;
       --green:#16a34a;
       --chip:#fff1e6;
       --chipText:#9a3412;
@@ -32,7 +31,7 @@
     html,body{ height:100%; }
     body{
       margin:0;
-      font-family:"Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      font-family:"Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       color:var(--text);
       background:
         radial-gradient(1200px 700px at 10% 0%, rgba(249,115,22,.16), transparent 60%),
@@ -43,278 +42,108 @@
     }
 
     a{ color:inherit; text-decoration:none; }
-    .wrap{
-      max-width:1100px;
-      margin:0 auto;
-      padding:28px 18px 44px;
-    }
+    .wrap{ max-width:1100px; margin:0 auto; padding:28px 18px 44px; }
 
-    /* Top bar */
-    .top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      margin-bottom:22px;
-    }
-    .brandRow{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      min-width: 200px;
-    }
-    .logo{
-      width:220px;
-      max-width: 65vw;
-      height:auto;
-      display:block;
-      filter: drop-shadow(0 10px 22px rgba(234,88,12,.12));
-    }
-    .topRight{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
+    .top{ display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:22px; }
+    .brandRow{ display:flex; align-items:center; gap:12px; min-width:200px; }
+    .logo{ width:220px; max-width:65vw; height:auto; display:block; filter: drop-shadow(0 10px 22px rgba(234,88,12,.12)); }
+    .topRight{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
     .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 12px;
-      border:1px solid var(--stroke);
-      background:rgba(255,255,255,.75);
-      backdrop-filter: blur(8px);
-      border-radius:999px;
-      font-size:13px;
-      color:var(--muted);
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px; border:1px solid var(--stroke);
+      background:rgba(255,255,255,.75); backdrop-filter: blur(8px);
+      border-radius:999px; font-size:13px; color:var(--muted);
     }
     .pill strong{ color:var(--text); font-weight:700; }
-    .dot{
-      width:8px; height:8px; border-radius:999px;
-      background:var(--green);
-      box-shadow: 0 0 0 4px rgba(22,163,74,.12);
-    }
+    .dot{ width:8px; height:8px; border-radius:999px; background:var(--green); box-shadow: 0 0 0 4px rgba(22,163,74,.12); }
 
-    /* Hero */
-    .hero{
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap:18px;
-      align-items:stretch;
-      margin-top:8px;
-    }
+    .hero{ display:grid; grid-template-columns: 1.15fr .85fr; gap:18px; align-items:stretch; margin-top:8px; }
     @media (max-width: 900px){
       .hero{ grid-template-columns: 1fr; }
       .top{ flex-direction:column; align-items:flex-start; }
       .topRight{ justify-content:flex-start; }
     }
 
-    .card{
-      background:rgba(255,255,255,.86);
-      border:1px solid var(--stroke);
-      border-radius:22px;
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .heroLeft{
-      padding:26px 26px 22px;
-      position:relative;
-    }
+    .card{ background:rgba(255,255,255,.86); border:1px solid var(--stroke); border-radius:22px; box-shadow: var(--shadow); overflow:hidden; }
+    .heroLeft{ padding:26px 26px 22px; position:relative; }
+
     .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 12px;
-      border-radius:999px;
-      background:var(--chip);
-      color:var(--chipText);
-      font-weight:700;
-      font-size:13px;
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px;
+      background:var(--chip); color:var(--chipText);
+      font-weight:700; font-size:13px;
       border:1px solid rgba(249,115,22,.18);
       margin-bottom:14px;
     }
-    .badge span{
-      display:inline-block;
-      width:8px; height:8px; border-radius:999px;
-      background:var(--brand);
-    }
+    .badge span{ width:8px; height:8px; border-radius:999px; background:var(--brand); }
 
-    h1{
-      margin:0 0 10px;
-      font-size:44px;
-      line-height:1.08;
-      letter-spacing:-0.045em;
-    }
+    h1{ margin:0 0 10px; font-size:44px; line-height:1.08; letter-spacing:-0.045em; }
     .grad{
       background: linear-gradient(90deg, var(--brand3), var(--brand), #22c55e);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+      -webkit-background-clip: text; background-clip: text; color: transparent;
     }
-    .sub{
-      margin:0 0 18px;
-      font-size:16px;
-      line-height:1.65;
-      color:var(--muted);
-      font-weight:500;
-      max-width: 62ch;
-    }
+    .sub{ margin:0 0 18px; font-size:16px; line-height:1.65; color:var(--muted); font-weight:500; max-width:62ch; }
 
-    .points{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-      margin:14px 0 18px;
-    }
+    .points{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin:14px 0 18px; }
     @media (max-width: 520px){
       .points{ grid-template-columns: 1fr; }
       h1{ font-size:36px; }
     }
     .pt{
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-      padding:12px 12px;
-      border:1px solid rgba(17,24,39,.08);
-      border-radius:16px;
-      background:rgba(255,255,255,.70);
+      display:flex; gap:10px; align-items:flex-start;
+      padding:12px 12px; border:1px solid rgba(17,24,39,.08);
+      border-radius:16px; background:rgba(255,255,255,.70);
     }
     .ic{
-      width:28px; height:28px;
-      border-radius:10px;
+      width:28px; height:28px; border-radius:10px;
       background:rgba(249,115,22,.14);
-      display:grid;
-      place-items:center;
-      flex:0 0 auto;
-      color:var(--brand3);
-      font-weight:900;
+      display:grid; place-items:center;
+      flex:0 0 auto; color:var(--brand3); font-weight:900;
     }
     .pt b{ display:block; font-size:14px; margin-bottom:2px; }
     .pt small{ color:var(--muted2); line-height:1.45; font-size:13px; }
 
-    .ctaRow{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      margin-top:10px;
-    }
+    .ctaRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px; }
     .btn{
-      appearance:none;
-      border:0;
-      cursor:pointer;
-      border-radius:14px;
-      padding:12px 14px;
-      font-weight:800;
-      font-size:14px;
+      appearance:none; border:0; cursor:pointer;
+      border-radius:14px; padding:12px 14px;
+      font-weight:800; font-size:14px;
       letter-spacing:-0.01em;
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
+      display:inline-flex; align-items:center; gap:10px;
       transition: transform .06s ease, box-shadow .2s ease, background .2s ease;
     }
     .btn:active{ transform: translateY(1px); }
     .btnPrimary{
       background: linear-gradient(135deg, var(--brand3), var(--brand));
-      color:white;
-      box-shadow: 0 18px 40px rgba(234,88,12,.22);
+      color:white; box-shadow: 0 18px 40px rgba(234,88,12,.22);
     }
-    .btnPrimary:hover{
-      box-shadow: 0 22px 55px rgba(234,88,12,.28);
-    }
-    .btnGhost{
-      background:rgba(255,255,255,.85);
-      border:1px solid rgba(17,24,39,.12);
-      color:var(--text);
-    }
-    .btnGhost:hover{
-      background:#fff;
-    }
-    .hint{
-      color:var(--muted2);
-      font-size:13px;
-      margin-top:8px;
-    }
+    .btnPrimary:hover{ box-shadow: 0 22px 55px rgba(234,88,12,.28); }
+    .btnPrimary:disabled{ opacity:.65; cursor:not-allowed; }
+    .btnGhost{ background:rgba(255,255,255,.85); border:1px solid rgba(17,24,39,.12); color:var(--text); }
+    .btnGhost:hover{ background:#fff; }
+    .hint{ color:var(--muted2); font-size:13px; margin-top:8px; }
 
-    /* Right card (Pricing + Access) */
-    .heroRight{
-      padding:18px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-    .sectionTitle{
-      font-weight:900;
-      letter-spacing:-0.02em;
-      margin:2px 0 6px;
-      font-size:14px;
-      color:var(--text);
-    }
-    .priceGrid{
-      display:grid;
-      gap:10px;
-    }
-    .priceCard{
-      border:1px solid rgba(17,24,39,.10);
-      border-radius:18px;
-      background:rgba(255,255,255,.80);
-      padding:14px;
-    }
-    .priceTop{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:10px;
-      margin-bottom:8px;
-    }
-    .priceTop b{
-      font-size:14px;
-      font-weight:900;
-    }
+    .heroRight{ padding:18px; display:flex; flex-direction:column; gap:12px; }
+    .sectionTitle{ font-weight:900; letter-spacing:-0.02em; margin:2px 0 6px; font-size:14px; color:var(--text); }
+    .priceGrid{ display:grid; gap:10px; }
+    .priceCard{ border:1px solid rgba(17,24,39,.10); border-radius:18px; background:rgba(255,255,255,.80); padding:14px; }
+    .priceTop{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:8px; }
+    .priceTop b{ font-size:14px; font-weight:900; }
     .tag{
-      font-size:12px;
-      font-weight:800;
-      color:var(--chipText);
-      background:var(--chip);
+      font-size:12px; font-weight:800;
+      color:var(--chipText); background:var(--chip);
       border:1px solid rgba(249,115,22,.18);
-      padding:6px 10px;
-      border-radius:999px;
-      white-space:nowrap;
+      padding:6px 10px; border-radius:999px; white-space:nowrap;
     }
-    .price{
-      font-size:22px;
-      font-weight:900;
-      letter-spacing:-0.03em;
-      margin:0 0 2px;
-    }
-    .per{
-      margin:0;
-      font-size:13px;
-      color:var(--muted2);
-      line-height:1.5;
-    }
+    .price{ font-size:22px; font-weight:900; letter-spacing:-0.03em; margin:0 0 2px; }
+    .per{ margin:0; font-size:13px; color:var(--muted2); line-height:1.5; }
 
-    .divider{
-      height:1px;
-      background:rgba(17,24,39,.08);
-      margin:4px 0;
-    }
+    .divider{ height:1px; background:rgba(17,24,39,.08); margin:4px 0; }
 
-    .accessBox{
-      border:1px solid rgba(17,24,39,.10);
-      border-radius:18px;
-      background:rgba(255,255,255,.85);
-      padding:14px;
-    }
-    .field{
-      display:flex;
-      gap:10px;
-      margin-top:10px;
-      flex-wrap:wrap;
-    }
+    .accessBox{ border:1px solid rgba(17,24,39,.10); border-radius:18px; background:rgba(255,255,255,.85); padding:14px; }
+    .field{ display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
     input[type="password"], input[type="text"]{
-      flex: 1 1 180px;
+      flex:1 1 180px;
       padding:12px 12px;
       border-radius:14px;
       border:1px solid rgba(17,24,39,.14);
@@ -327,36 +156,16 @@
       border-color: rgba(249,115,22,.5);
       box-shadow: 0 0 0 4px rgba(249,115,22,.16);
     }
-    .msg{
-      margin-top:10px;
-      font-size:13px;
-      color:var(--muted);
-      line-height:1.5;
-      min-height: 18px;
-    }
+    .msg{ margin-top:10px; font-size:13px; color:var(--muted); line-height:1.5; min-height:18px; white-space:pre-wrap; }
     .msg.ok{ color:#166534; }
     .msg.err{ color:#991b1b; }
 
-    /* Modules */
-    .modules{
-      margin-top:18px;
-      padding:18px 20px;
-    }
-    .modules h2{
-      margin:0 0 10px;
-      font-size:18px;
-      letter-spacing:-0.03em;
-    }
-    .chips{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
+    .modules{ margin-top:18px; padding:18px 20px; }
+    .modules h2{ margin:0 0 10px; font-size:18px; letter-spacing:-0.03em; }
+    .chips{ display:flex; flex-wrap:wrap; gap:8px; }
     .chip{
-      font-size:12.5px;
-      font-weight:700;
-      padding:8px 10px;
-      border-radius:999px;
+      font-size:12.5px; font-weight:700;
+      padding:8px 10px; border-radius:999px;
       border:1px solid rgba(17,24,39,.10);
       background:rgba(255,255,255,.75);
       color:#1f2937;
@@ -367,23 +176,10 @@
       color:#9a3412;
     }
 
-    /* Footer */
-    footer{
-      margin-top:16px;
-      padding:18px 6px 4px;
-      color:var(--muted2);
-      font-size:13px;
-      line-height:1.6;
-    }
+    footer{ margin-top:16px; padding:18px 6px 4px; color:var(--muted2); font-size:13px; line-height:1.6; }
     footer b{ color:var(--text); }
-    .footGrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-    }
-    @media (max-width: 820px){
-      .footGrid{ grid-template-columns: 1fr; }
-    }
+    .footGrid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    @media (max-width: 820px){ .footGrid{ grid-template-columns: 1fr; } }
     .footCard{
       border:1px solid rgba(17,24,39,.08);
       border-radius:18px;
@@ -391,32 +187,21 @@
       padding:14px;
     }
     .wa{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      font-weight:800;
-      color:#065f46;
+      display:inline-flex; align-items:center; gap:8px;
+      font-weight:800; color:#065f46;
       background:rgba(16,185,129,.10);
       border:1px solid rgba(16,185,129,.18);
-      padding:8px 10px;
-      border-radius:999px;
+      padding:8px 10px; border-radius:999px;
       margin-top:8px;
     }
-    .smallNote{
-      margin-top:8px;
-      font-size:12px;
-      color:var(--muted2);
-    }
+    .smallNote{ margin-top:8px; font-size:12px; color:var(--muted2); }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-
     <div class="top">
       <div class="brandRow">
-        <!-- Ganti src ini sesuai lokasi file logo kamu -->
-        <!-- Pastikan file logo disimpan misalnya di: /static/logo-aca-aol.png -->
         <img class="logo" src="/static/logo-aca-aol.png" alt="ACA-AOL Logo">
       </div>
 
@@ -473,13 +258,10 @@
         </div>
 
         <div class="ctaRow">
-          <button class="btn btnPrimary" id="btnLoginAccurate" type="button">
-            🔐 Login Accurate (OAuth)
-          </button>
-          <a class="btn btnGhost" href="#paket">
-            💳 Lihat Paket & Harga
-          </a>
-          <a class="btn btnGhost" target="_blank" rel="noopener" href="https://wa.me/6287884538950?text=Halo%20ACA-AOL,%20saya%20mau%20tanya%20paket%20langganan%20dan%20modul.">
+          <button class="btn btnPrimary" id="btnLoginAccurate" type="button">🔐 Login Accurate (OAuth)</button>
+          <a class="btn btnGhost" href="#paket">💳 Lihat Paket & Harga</a>
+          <a class="btn btnGhost" target="_blank" rel="noopener"
+             href="https://wa.me/6287884538950?text=Halo%20ACA-AOL,%20saya%20mau%20tanya%20paket%20langganan%20dan%20modul.">
             💬 Konsultasi via WhatsApp
           </a>
         </div>
@@ -543,17 +325,6 @@
         <span class="chip">Bank Transfer</span>
         <span class="chip">Sales Invoice</span>
         <span class="chip">Sales Receipt</span>
-        <span class="chip">Sales Order</span>
-        <span class="chip">Delivery Order</span>
-        <span class="chip">Sales Return</span>
-        <span class="chip">Purchase Order</span>
-        <span class="chip">Receive Item</span>
-        <span class="chip">Purchase Invoice</span>
-        <span class="chip">Purchase Payment</span>
-        <span class="chip">Purchase Return</span>
-        <span class="chip">Item Transfer</span>
-        <span class="chip">Item Adjustment</span>
-        <span class="chip">Job Costing</span>
         <span class="chip more">dll.</span>
       </div>
     </section>
@@ -578,69 +349,87 @@
     </footer>
   </div>
 
-<script>
-  const $ = (id) => document.getElementById(id);
+  <script>
+    const $ = (id) => document.getElementById(id);
 
-  function setMsg(text, type){
-    const el = $("msg");
-    el.textContent = text || "";
-    el.className = "msg" + (type ? " " + type : "");
-  }
+    function setMsg(text, type){
+      const el = $("msg");
+      el.textContent = text || "";
+      el.className = "msg" + (type ? " " + type : "");
+    }
 
-  async function refreshAuthStatus(){
-    try{
-      const res = await fetch("/auth/status", { credentials: "include" });
-      const data = await res.json();
-      $("authStatus").textContent = data.access_ok ? "Akses Aktif" : "Belum Login";
-
-      // OPTIONAL: kalau sudah akses aktif, langsung arahkan ke app
-      if (data.access_ok && location.pathname === "/") {
-        // kasih jeda kecil biar UI sempat update
-        setTimeout(() => { window.location.href = "/app"; }, 200);
+    async function safeReadJson(res){
+      const ct = (res.headers.get("content-type") || "").toLowerCase();
+      if(ct.includes("application/json")){
+        return await res.json();
       }
-    }catch(e){
-      $("authStatus").textContent = "Unknown";
+      const text = await res.text();
+      return { ok:false, error:`Response bukan JSON (${res.status}).\n${text.slice(0,300)}` };
     }
-  }
 
-  $("btnLoginAccurate").addEventListener("click", () => {
-    window.location.href = "/oauth/login";
-  });
+    async function refreshAuthStatus({redirectIfOk=false} = {}){
+      try{
+        const res = await fetch("/auth/status", { credentials: "include" });
+        const data = await safeReadJson(res);
 
-  $("btnVerify").addEventListener("click", async () => {
-    setMsg("Memeriksa kode…");
-    const code = ($("accessCode").value || "").trim();
-    if(!code){
-      setMsg("Kode akses masih kosong.", "err");
-      return;
+        const ok = !!data.access_ok;
+        $("authStatus").textContent = ok ? "Akses Aktif" : "Belum Login";
+
+        if(redirectIfOk && ok){
+          window.location.href = "/app";
+        }
+        return data;
+      }catch(e){
+        $("authStatus").textContent = "Unknown";
+        return null;
+      }
     }
-    try{
-      const res = await fetch("/auth/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ code })
-      });
-      const data = await res.json();
 
-      if(!res.ok || !data.ok){
-        setMsg(data.error || "Gagal verifikasi kode.", "err");
+    $("btnLoginAccurate").addEventListener("click", () => {
+      window.location.href = "/oauth/login";
+    });
+
+    $("btnVerify").addEventListener("click", async () => {
+      const btn = $("btnVerify");
+      btn.disabled = true;
+
+      try{
+        setMsg("Memeriksa kode…");
+        const code = ($("accessCode").value || "").trim();
+        if(!code){
+          setMsg("Kode akses masih kosong.", "err");
+          return;
+        }
+
+        const res = await fetch("/auth/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ code })
+        });
+
+        const data = await safeReadJson(res);
+
+        if(!res.ok || !data.ok){
+          setMsg(data.error || "Gagal verifikasi kode.", "err");
+          await refreshAuthStatus();
+          return;
+        }
+
+        setMsg("Berhasil! Mengalihkan ke aplikasi…", "ok");
         await refreshAuthStatus();
-        return;
+        window.location.href = "/app";
+      }catch(e){
+        setMsg("Error koneksi / fetch gagal. Coba refresh halaman.", "err");
+      }finally{
+        btn.disabled = false;
       }
+    });
 
-    // ✅ SUKSES
-    setMsg("Berhasil! Akses sudah aktif. Mengalihkan ke aplikasi…", "ok");
-    await refreshAuthStatus();
+    $("year").textContent = new Date().getFullYear();
 
-    // ⏩ redirect ke app
-    setTimeout(() => {
-    window.location.href = "/app";
-    }, 600);
-
-  $("year").textContent = new Date().getFullYear();
-  refreshAuthStatus();
-</script>
-
+    // AUTO redirect kalau session sudah akses_ok
+    refreshAuthStatus({redirectIfOk:true});
+  </script>
 </body>
 </html>

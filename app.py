@@ -271,6 +271,14 @@ def auth_logout(request: Request):
 
     return {"ok": True}
 
+@app.get("/auth/logout")
+def auth_logout_get(request: Request):
+    # panggil logic logout yang sama
+    request.session.clear()
+    OAUTH_STORE["token"] = None
+    OAUTH_STORE["token_expiry"] = 0
+    OAUTH_STORE["state"] = None
+    return RedirectResponse("/", status_code=302)
 
 # =========================
 # UI ROUTES
