@@ -289,6 +289,16 @@ def app_page(request: Request):
         """
     )
 
+@app.get("/app", response_class=HTMLResponse)
+def app_home(request: Request):
+    if not request.session.get("access_ok"):
+        return RedirectResponse("/", status_code=302)
+
+    return templates.TemplateResponse("app.html", {
+        "request": request,
+        "tenant": request.session.get("tenant", "default")
+    })
+
 
 # =========================
 # OAUTH HELPERS
